@@ -1,5 +1,5 @@
 import React from 'react';
-import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
+import { HashRouter as Router, Routes, Route } from 'react-router-dom';
 import { ThemeProvider } from './contexts/ThemeContext';
 import { AuthProvider } from './contexts/AuthContext';
 import { NetworkingProvider } from './contexts/NetworkingContext';
@@ -24,7 +24,7 @@ const App = () => (
       <AuthProvider>
         <NetworkingProvider>
           <NotificationProvider>
-            <Router basename="/campus-connect">
+            <Router>
               <div className="bg-custom-bg text-custom-text min-h-screen transition-theme">
                 <Routes>
                   <Route path="/" element={<HomePage />} />
