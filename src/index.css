@@ -1,0 +1,1002 @@
+.dark {
+  --custom-bg: #0f172a !important;
+  --custom-bg-2: #1e293b !important;
+  --custom-bg-3: #334155 !important;
+  --custom-text: #f8fafc !important;
+  --custom-text-secondary: #94a3b8 !important;
+  --custom-border: #475569 !important;
+  --custom-border-2: #64748b !important;
+  --custom-blue: #3b82f6 !important;
+  --custom-teal: #06b6d4 !important;
+  --custom-orange: #f97316 !important;
+  --hero-gradient-start: rgba(15, 23, 42, 0.9) !important;
+  --hero-gradient-end: rgba(15, 23, 42, 0.7) !important;
+  --button-bg: #06b6d4 !important;
+  --button-text: #0f172a !important;
+  --shadow-color: rgba(0, 0, 0, 0.5) !important;
+  --hover-bg: rgba(255, 255, 255, 0.05) !important;
+  --active-bg: rgba(255, 255, 255, 0.1) !important;
+  --input-bg: #1e293b !important;
+  --card-bg: #1e293b !important;
+  --modal-bg: rgba(15, 23, 42, 0.95) !important;
+}
+:root {
+  --custom-bg: #f8fafc;
+  --custom-bg-2: #ffffff;
+  --custom-bg-3: #f1f5f9;
+  --custom-text: #0f172a;
+  --custom-text-secondary: #64748b;
+  --custom-border: #e2e8f0;
+  --custom-border-2: #cbd5e1;
+  --custom-blue: #0077b6;
+  --custom-teal: #00f5d4;
+  --custom-orange: #ff6b6b;
+  --hero-bg-1: url("https://images.unsplash.com/photo-1523580494863-6f3031224c94?q=80&w=2070&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D");
+  --hero-bg-2: url("https://images.unsplash.com/photo-1511578314322-379afb476865?q=80&w=2070&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D");
+  --hero-bg-3: url("https://images.unsplash.com/photo-1522202176988-66273c2fd55f?q=80&w=2071&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D");
+  --hero-gradient-start: rgba(248, 250, 252, 0.9);
+  --hero-gradient-end: rgba(248, 250, 252, 0.7);
+  --button-bg: var(--custom-teal);
+  --button-text: #0f172a;
+  --shadow-color: rgba(0, 0, 0, 0.1);
+  --hover-bg: rgba(0, 0, 0, 0.05);
+  --active-bg: rgba(0, 0, 0, 0.1);
+  --input-bg: #ffffff;
+  --card-bg: #ffffff;
+  --modal-bg: rgba(255, 255, 255, 0.95);
+}
+body {
+  font-family: "Poppins", sans-serif;
+  background-color: var(--custom-bg) !important;
+  color: var(--custom-text) !important;
+  margin: 0;
+  transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+/* Ensure dark mode is applied to body */
+.dark body {
+  background-color: var(--custom-bg) !important;
+  color: var(--custom-text) !important;
+}
+
+/* Smooth theme transitions */
+* {
+  transition: background-color 0.3s ease, color 0.3s ease, border-color 0.3s ease;
+}
+
+/* Force dark mode inheritance */
+.dark * {
+  color: inherit;
+}
+
+/* Ensure all background colors use CSS variables */
+.dark .bg-custom-bg {
+  background-color: var(--custom-bg) !important;
+}
+
+.dark .bg-custom-bg-2 {
+  background-color: var(--custom-bg-2) !important;
+}
+
+.dark .bg-custom-bg-3 {
+  background-color: var(--custom-bg-3) !important;
+}
+
+.dark .text-custom-text {
+  color: var(--custom-text) !important;
+}
+
+.dark .text-custom-text-secondary {
+  color: var(--custom-text-secondary) !important;
+}
+
+.dark .border-custom-border {
+  border-color: var(--custom-border) !important;
+}
+
+.dark .border-custom-border-2 {
+  border-color: var(--custom-border-2) !important;
+}
+
+/* Navbar active state - use light theme teal color for both themes */
+.bg-teal-400 {
+  background-color: #00f5d4 !important;
+  color: #0f172a !important;
+}
+
+.dark .bg-teal-400 {
+  background-color: #00f5d4 !important;
+  color: #0f172a !important;
+}
+
+/* Preserve specific transitions that should not be overridden */
+.hero-section,
+.toast-notification,
+.suggestion-item,
+button,
+input,
+textarea,
+select {
+  transition: all 0.3s ease;
+}
+.bg-custom-bg {
+  background-color: var(--custom-bg);
+}
+.bg-custom-bg-2 {
+  background-color: var(--custom-bg-2);
+}
+.text-custom-text {
+  color: var(--custom-text);
+}
+.text-custom-text-secondary {
+  color: var(--custom-text-secondary);
+}
+.border-custom-border {
+  border-color: var(--custom-border);
+}
+.border-custom-border-2 {
+  border-color: var(--custom-border-2);
+}
+.bg-custom-bg-3 {
+  background-color: var(--custom-bg-3);
+}
+.bg-custom-blue {
+  background-color: var(--custom-blue);
+}
+.text-custom-blue {
+  color: var(--custom-blue);
+}
+.text-custom-teal {
+  color: var(--custom-teal);
+}
+.bg-custom-teal {
+  background-color: var(--custom-teal);
+}
+.text-custom-orange {
+  color: var(--custom-orange);
+}
+.bg-custom-orange {
+  background-color: var(--custom-orange);
+}
+.bg-input {
+  background-color: var(--input-bg);
+}
+.bg-card {
+  background-color: var(--card-bg);
+}
+.bg-modal {
+  background-color: var(--modal-bg);
+}
+.bg-hover:hover {
+  background-color: var(--hover-bg);
+}
+.bg-active:active {
+  background-color: var(--active-bg);
+}
+.hero-section {
+  background-size: cover;
+  background-position: center;
+  transition: background-image 1s ease-in-out, opacity 1s;
+  opacity: 1;
+}
+.hero-section.fade {
+  opacity: 0;
+}
+@keyframes changeBg {
+  0%,
+  100% {
+    background-image: linear-gradient(
+        to right,
+        var(--hero-gradient-start),
+        var(--hero-gradient-end)),
+        var(--hero-bg-1);
+  }
+  33% {
+    background-image: linear-gradient(
+        to right,
+        var(--hero-gradient-start),
+        var(--hero-gradient-end)),
+        var(--hero-bg-2);
+  }
+  66% {
+    background-image: linear-gradient(
+        to right,
+        var(--hero-gradient-start),
+        var(--hero-gradient-end)),
+        var(--hero-bg-3);
+  }
+}
+.event-card {
+  background-color: var(--custom-bg-2);
+}
+#theme-toggle:checked + label div {
+  transform: translateX(100%);
+}
+
+/* Theme toggle switch base styles */
+#theme-toggle + label {
+  display: inline-block;
+  width: 48px;
+  height: 24px;
+  background: var(--custom-border);
+  border-radius: 9999px;
+  position: relative;
+  cursor: pointer;
+  transition: background 0.3s;
+}
+#theme-toggle + label div {
+  position: absolute;
+  top: 2px;
+  left: 2px;
+  width: 20px;
+  height: 20px;
+  background: #fff;
+  border-radius: 50%;
+  transition: transform 0.3s, background 0.3s;
+  box-shadow: 0 1px 4px rgba(0,0,0,0.08);
+  border: 2px solid var(--custom-border);
+}
+
+/* Move knob when checked */
+#theme-toggle:checked + label div {
+  transform: translateX(24px);
+}
+
+/* Dark mode adjustments */
+.dark #theme-toggle + label {
+  background: var(--custom-bg);
+}
+.dark #theme-toggle + label div {
+  background: #e5e7eb;
+  border: 2px solid var(--custom-border);
+}
+.hero-section .bg-custom-teal {
+  background-color: var(--button-bg);
+  color: var(--button-text);
+}
+
+/* Hero Section Buttons */
+.hero-register-button {
+  background-color: var(--custom-teal);
+  color: black;
+  font-weight: bold;
+  padding: 0.75rem 1.5rem;
+  border-radius: 0.5rem;
+  transition: background-color 0.3s, opacity 0.3s;
+}
+
+.hero-register-button:hover {
+  opacity: 0.9;
+}
+
+.hero-learn-more-button {
+  background-color: transparent;
+  border: 2px solid var(--custom-text);
+  color: var(--custom-text);
+  font-weight: bold;
+  padding: 0.75rem 1.5rem;
+  border-radius: 0.5rem;
+  transition: background-color 0.3s, color 0.3s;
+}
+
+.hero-learn-more-button:hover {
+  background-color: var(--custom-text);
+  color: var(--custom-bg);
+}
+
+/* Profile Card Styles */
+.profile-card {
+  position: relative;
+}
+
+.profile-avatar {
+  position: absolute;
+  top: 50px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 80px;
+  height: 80px;
+  background: var(--custom-teal);
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 24px;
+  font-weight: bold;
+  color: var(--button-text);
+  border: 4px solid var(--custom-bg-2);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+}
+
+/* Active Now Card Styles */
+.active-now-card .active-now-avatar {
+  width: 40px;
+  height: 40px;
+  background: var(--custom-teal);
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 14px;
+  font-weight: bold;
+  color: var(--button-text);
+}
+
+.active-status {
+  position: absolute;
+  bottom: 2px;
+  right: 2px;
+  width: 12px;
+  height: 12px;
+  background-color: #10b981;
+  border: 2px solid var(--custom-bg-2);
+  border-radius: 50%;
+}
+
+/* Recommendation Card Styles */
+.recommendation-avatar {
+  width: 60px;
+  height: 60px;
+  background: var(--custom-teal);
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 18px;
+  font-weight: bold;
+  color: var(--button-text);
+  margin: 0 auto 16px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+/* Hover effects for cards */
+.profile-card:hover,
+.active-now-card:hover,
+.upcoming-events-card:hover,
+.people-you-may-know:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 25px rgba(0, 0, 0, 0.1);
+  transition: all 0.3s ease;
+}
+
+/* Mobile responsive adjustments */
+@media (max-width: 768px) {
+  .profile-avatar {
+    width: 60px;
+    height: 60px;
+    font-size: 20px;
+    top: 40px;
+  }
+  
+  .recommendation-avatar {
+    width: 50px;
+    height: 50px;
+    font-size: 16px;
+  }
+  
+  .active-now-avatar {
+    width: 35px;
+    height: 35px;
+    font-size: 12px;
+  }
+}
+
+/* Theme toggle styles for React */
+.theme-toggle {
+  display: inline-block;
+  width: 48px;
+  height: 24px;
+  background: var(--custom-border);
+  border-radius: 9999px;
+  position: relative;
+  cursor: pointer;
+  transition: background 0.3s;
+}
+
+.theme-toggle-knob {
+  position: absolute;
+  top: 2px;
+  left: 2px;
+  width: 20px;
+  height: 20px;
+  background: #fff;
+  border-radius: 50%;
+  transition: transform 0.3s, background 0.3s;
+  box-shadow: 0 1px 4px rgba(0,0,0,0.08);
+  border: 2px solid var(--custom-border);
+}
+
+.theme-toggle.checked .theme-toggle-knob {
+  transform: translateX(24px);
+}
+
+.dark .theme-toggle {
+  background: var(--custom-bg);
+}
+
+.dark .theme-toggle-knob {
+  background: #e5e7eb;
+  border: 2px solid var(--custom-border);
+}
+
+/* Password toggle styles */
+.input-with-icon {
+  position: relative;
+}
+
+.toggle-password {
+  position: absolute;
+  right: 12px;
+  top: 50%;
+  transform: translateY(-50%);
+  background: none;
+  border: none;
+  cursor: pointer;
+  color: var(--custom-text-secondary);
+  padding: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.toggle-password:hover {
+  color: var(--custom-text);
+}
+
+/* Toast Notification Animations */
+.toast-notification {
+  transform: translateX(100%);
+  opacity: 0;
+  backdrop-filter: blur(10px);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.toast-enter {
+  transform: translateX(0);
+  opacity: 1;
+}
+
+.toast-exit {
+  transform: translateX(100%);
+  opacity: 0;
+}
+
+/* Toast styling improvements for dark mode */
+.dark .toast-notification {
+  backdrop-filter: blur(10px);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.3);
+}
+
+.toast-notification {
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
+}
+
+/* Enhanced toast text visibility */
+.toast-notification h4 {
+  font-weight: 600;
+  color: inherit;
+}
+
+.toast-notification p {
+  color: inherit;
+  opacity: 0.9;
+}
+
+/* Ensure better contrast for light mode */
+.toast-notification.text-green-900 {
+  color: #14532d !important;
+}
+
+.toast-notification.text-red-900 {
+  color: #7f1d1d !important;
+}
+
+.toast-notification.text-yellow-900 {
+  color: #713f12 !important;
+}
+
+.toast-notification.text-blue-900 {
+  color: #1e3a8a !important;
+}
+
+/* Dark mode text colors */
+.dark .toast-notification.text-green-100 {
+  color: #dcfce7 !important;
+}
+
+.dark .toast-notification.text-red-100 {
+  color: #fecaca !important;
+}
+
+.dark .toast-notification.text-yellow-100 {
+  color: #fef3c7 !important;
+}
+
+.dark .toast-notification.text-blue-100 {
+  color: #dbeafe !important;
+}
+
+/* Audio Control Button Styles */
+.audio-control-btn {
+  background: rgba(0, 0, 0, 0.6);
+  backdrop-filter: blur(10px);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  transition: all 0.3s ease;
+}
+
+.audio-control-btn:hover {
+  background: rgba(0, 0, 0, 0.8);
+  transform: scale(1.05);
+}
+
+.audio-control-btn.muted {
+  background: rgba(239, 68, 68, 0.6);
+}
+
+.audio-control-btn.muted:hover {
+  background: rgba(239, 68, 68, 0.8);
+}
+
+/* Enhanced Button Animations */
+.btn-primary {
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.btn-primary:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 10px 25px rgba(0, 245, 212, 0.3);
+}
+
+.btn-primary:active {
+  transform: translateY(0);
+}
+
+/* Hero Button Styles */
+.hero-register-button {
+  background: var(--custom-teal);
+  color: black;
+  padding: 12px 32px;
+  border-radius: 8px;
+  font-weight: 600;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  border: none;
+  cursor: pointer;
+}
+
+.hero-register-button:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 12px 30px rgba(0, 245, 212, 0.4);
+  background: rgba(0, 245, 212, 0.9);
+}
+
+.hero-learn-more-button {
+  background: transparent;
+  color: var(--custom-text);
+  padding: 12px 32px;
+  border: 2px solid rgba(255, 255, 255, 0.3);
+  border-radius: 8px;
+  font-weight: 600;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  cursor: pointer;
+  backdrop-filter: blur(10px);
+}
+
+.hero-learn-more-button:hover {
+  transform: translateY(-2px);
+  background: rgba(255, 255, 255, 0.1);
+  border-color: rgba(255, 255, 255, 0.5);
+  box-shadow: 0 8px 25px rgba(0, 0, 0, 0.2);
+}
+
+/* Card Hover Effects */
+.event-card:hover {
+  transform: translateY(-8px);
+  box-shadow: 0 20px 40px rgba(0, 245, 212, 0.15);
+}
+
+/* Smooth Scrolling */
+html {
+  scroll-behavior: smooth;
+}
+
+/* Loading Animation */
+@keyframes shimmer {
+  0% {
+    background-position: -200px 0;
+  }
+  100% {
+    background-position: calc(200px + 100%) 0;
+  }
+}
+
+.loading-shimmer {
+  background: linear-gradient(90deg, #f0f0f0 25%, #e0e0e0 50%, #f0f0f0 75%);
+  background-size: 200px 100%;
+  animation: shimmer 1.5s infinite;
+}
+
+.dark .loading-shimmer {
+  background: linear-gradient(90deg, #334155 25%, #475569 50%, #334155 75%);
+  background-size: 200px 100%;
+  animation: shimmer 1.5s infinite;
+}
+
+/* Dark-mode compatibility overrides
+   These keep existing markup (e.g. `text-white`, `bg-white`, `text-black`) working
+   by mapping them to the project's CSS variables when the `.dark` class is present. */
+.dark .text-white {
+  color: var(--custom-text) !important;
+}
+.dark .text-black {
+  color: var(--custom-text) !important;
+}
+.dark .bg-white {
+  background-color: var(--custom-bg-2) !important;
+}
+.dark .bg-black {
+  /* use a semi-opaque overlay suitable for dark mode */
+  background-color: rgba(0, 0, 0, 0.6) !important;
+}
+.dark .bg-black.bg-opacity-50 {
+  background-color: rgba(0, 0, 0, 0.5) !important;
+}
+.dark .bg-black.bg-opacity-70 {
+  background-color: rgba(0, 0, 0, 0.7) !important;
+}
+.dark .text-gray-900 {
+  color: var(--custom-text) !important;
+}
+
+/* Stronger global dark-mode base to override Tailwind utilities when needed */
+html.dark body,
+.dark body {
+  background-color: var(--custom-bg) !important;
+  color: var(--custom-text) !important;
+}
+
+/* Common UI elements */
+.dark .card,
+.dark .bg-card,
+.dark .bg-custom-bg-2 {
+  background-color: var(--card-bg) !important;
+}
+
+.dark input,
+.dark textarea,
+.dark select,
+.dark .bg-input {
+  background-color: var(--input-bg) !important;
+  color: var(--custom-text) !important;
+  border-color: var(--custom-border) !important;
+}
+
+.dark .border-custom-border,
+.dark .border-custom-border-2,
+.dark .border {
+  border-color: var(--custom-border) !important;
+}
+
+/* Buttons that relied on white/black text should be readable on dark backgrounds */
+.dark .text-white-on-dark {
+  color: var(--custom-text) !important;
+}
+
+/* Ensure overlay/backdrop elements that used bg-black look correct */
+.dark .bg-black.bg-opacity-50 {
+  background-color: rgba(255,255,255,0.04) !important;
+}
+
+/* Fallback: for any element using text-black/bg-white directly, prefer theme tokens */
+.dark .text-black, .dark .text-gray-800 {
+  color: var(--custom-text) !important;
+}
+.dark .bg-white, .dark .bg-gray-50, .dark .bg-gray-100 {
+  background-color: var(--custom-bg-2) !important;
+}
+
+/* Additional mappings for commonly-used Tailwind utilities that affect containers, badges and chips */
+.dark .bg-blue-100 {
+  background-color: rgba(59,130,246,0.08) !important; /* subtle blue tint */
+}
+.dark .text-blue-800,
+.dark .text-blue-600,
+.dark .text-blue-500 {
+  color: var(--custom-blue) !important;
+}
+.dark .bg-blue-500,
+.dark .bg-blue-600 {
+  background-color: var(--custom-blue) !important;
+  color: #ffffff !important;
+}
+
+.dark .bg-green-500,
+.dark .text-green-600 {
+  /* keep green accents but ensure contrast */
+  background-color: rgba(16,185,129,0.12) !important;
+  color: #10b981 !important;
+}
+
+.dark .bg-yellow-500,
+.dark .text-yellow-500,
+.dark .text-yellow-400 {
+  color: var(--custom-orange) !important;
+}
+
+/* Map gray/text utilities to theme tokens */
+.dark .text-gray-300,
+.dark .text-gray-400,
+.dark .text-gray-500 {
+  color: var(--custom-text-secondary) !important;
+}
+.dark .text-gray-700,
+.dark .text-gray-800,
+.dark .text-gray-900 {
+  color: var(--custom-text) !important;
+}
+
+/* Borders used by Tailwind */
+.dark .border-gray-100,
+.dark .border-gray-200,
+.dark .border-gray-300,
+.dark .border {
+  border-color: var(--custom-border) !important;
+}
+
+/* Pills, chips and small badges that use light backgrounds */
+.dark .bg-blue-50,
+.dark .bg-slate-50,
+.dark .bg-indigo-50 {
+  background-color: rgba(59,130,246,0.06) !important;
+}
+
+/* Ensure icons and material-icons inherit appropriate color in dark mode where not styled explicitly */
+.dark .material-icons,
+.dark .material-symbols-outlined {
+  color: var(--custom-text-secondary) !important;
+}
+
+/* Overlay/backdrop elements */
+.dark .modal-backdrop,
+.dark .overlay,
+.dark .bg-black.bg-opacity-50 {
+  background-color: rgba(0,0,0,0.55) !important;
+}
+
+/* Ensure elevated shadows adapt to dark background by reducing glow */
+.dark .shadow,
+.dark .shadow-lg,
+.dark .shadow-xl {
+  box-shadow: 0 8px 20px rgba(2,6,23,0.6) !important;
+}
+
+/* Buttons that used explicit white/black should be readable */
+.dark .btn-primary,
+.dark .btn,
+.dark button {
+  color: inherit;
+}
+
+/* Inputs/selects/textareas general mapping */
+.dark input::placeholder,
+.dark textarea::placeholder {
+  color: rgba(248,250,252,0.6) !important;
+}
+
+/* Utility: force backgrounds used on small cards to theme token */
+.dark .bg-card,
+.dark .card,
+.dark .bg-custom-bg-2 {
+  background-color: var(--card-bg) !important;
+  color: var(--custom-text) !important;
+}
+
+/* Make sure gradients using white tones are toned down */
+.dark .gradient-white-to-transparent {
+  background-image: linear-gradient(180deg, rgba(255,255,255,0.03), transparent) !important;
+}
+
+/* Tone down bright solid colors in dark mode and convert them to subtle tints */
+.dark .bg-custom-blue {
+  background-color: rgba(59,130,246,0.10) !important; /* subtle blue tint */
+  color: var(--custom-blue) !important;
+}
+.dark .bg-custom-teal {
+  background-color: rgba(6,182,212,0.08) !important;
+  color: var(--custom-teal) !important;
+}
+.dark .bg-custom-orange {
+  background-color: rgba(249,115,22,0.08) !important;
+  color: var(--custom-orange) !important;
+}
+.dark .bg-green-600,
+.dark .bg-green-500 {
+  background-color: rgba(16,185,129,0.08) !important;
+  color: #10b981 !important;
+}
+.dark .bg-red-500,
+.dark .bg-red-600 {
+  background-color: rgba(239,68,68,0.10) !important;
+  color: #ef4444 !important;
+}
+.dark .bg-yellow-500,
+.dark .text-yellow-500 {
+  background-color: rgba(245,158,11,0.06) !important;
+  color: var(--custom-orange) !important;
+}
+
+/* Gradient avatars/icons used across the app: tone down while preserving accent color */
+.dark .bg-gradient-to-r.from-custom-blue.to-custom-teal,
+.dark .recommendation-avatar,
+.dark .profile-avatar,
+.dark .active-now-avatar,
+.dark .user-avatar,
+.dark .w-12.h-12.bg-gradient-to-r,
+.dark .w-16.h-16.bg-gradient-to-r {
+  background: var(--custom-teal) !important;
+  color: var(--button-text) !important;
+  border: 2px solid var(--custom-border) !important;
+}
+
+/* Buttons: avoid extremely bright solid colors on dark backgrounds; prefer tinted backgrounds with readable text */
+.dark .bg-custom-blue.text-white,
+.dark .bg-custom-blue.text-black,
+.dark .bg-blue-600.text-white {
+  background-color: rgba(59,130,246,0.14) !important;
+  color: var(--custom-blue) !important;
+}
+.dark .bg-custom-teal.text-black,
+.dark .bg-custom-teal.text-white {
+  background-color: rgba(6,182,212,0.12) !important;
+  color: var(--custom-teal) !important;
+}
+
+/* Pills/chips (bg-*-100) should be low-contrast on dark background */
+.dark .bg-blue-100,
+.dark .bg-green-100,
+.dark .bg-indigo-100,
+.dark .bg-red-100 {
+  background-color: rgba(255,255,255,0.02) !important;
+  color: var(--custom-text-secondary) !important;
+}
+
+/* Any inline black overlays (modals/backdrops) should be subtle but not fully black */
+.dark .bg-black,
+.dark .bg-black.bg-opacity-50,
+.dark .modal-backdrop {
+  background-color: rgba(0,0,0,0.6) !important;
+}
+
+/* Ensure icon buttons (audio/controls) remain visible but not too bright */
+.dark .audio-control-btn {
+  background: rgba(255,255,255,0.04) !important;
+  border: 1px solid rgba(255,255,255,0.04) !important;
+}
+.dark .audio-control-btn:hover {
+  background: rgba(255,255,255,0.06) !important;
+}
+
+/* Tooltips, badges, and small chips should use theme tokens */
+.dark .badge,
+.dark .chip,
+.dark .tag,
+.dark .rounded-full.px-2.py-1 {
+  background-color: rgba(255,255,255,0.03) !important;
+  color: var(--custom-text) !important;
+  border: 1px solid rgba(255,255,255,0.03) !important;
+}
+
+/* Search Suggestions Styles */
+.search-suggestions {
+  backdrop-filter: blur(12px);
+  border: 1px solid var(--custom-border);
+  background: var(--modal-bg);
+  box-shadow: 0 20px 25px -5px var(--shadow-color), 0 10px 10px -5px var(--shadow-color);
+}
+
+.dark .search-suggestions {
+  background: var(--modal-bg);
+  border-color: var(--custom-border);
+  box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.8), 0 10px 10px -5px rgba(0, 0, 0, 0.4);
+}
+
+/* Fullscreen Video Styles */
+.fullscreen-video {
+  position: fixed !important;
+  top: 0 !important;
+  left: 0 !important;
+  width: 100vw !important;
+  height: 100vh !important;
+  z-index: 9999 !important;
+  background: black !important;
+  border-radius: 0 !important;
+}
+
+/* Fullscreen Controls */
+.fullscreen-video .material-icons {
+  font-size: 24px;
+}
+
+.fullscreen-video button {
+  opacity: 0.8;
+  transition: all 0.2s ease;
+}
+
+.fullscreen-video button:hover {
+  opacity: 1;
+  transform: scale(1.1);
+}
+
+/* Hide controls when not hovering */
+.fullscreen-video:not(:hover) > div > div:first-child,
+.fullscreen-video:not(:hover) > div > div:last-child {
+  opacity: 0;
+  transition: opacity 0.3s ease;
+}
+
+.fullscreen-video > div > div:first-child,
+.fullscreen-video > div > div:last-child {
+  opacity: 1;
+  transition: opacity 0.3s ease;
+}
+
+/* Dark-mode button and fullscreen tweaks */
+.dark .hero-register-button {
+  background: var(--button-bg) !important;
+  color: var(--button-text) !important;
+}
+.dark .hero-register-button:hover {
+  background: color-mix(in srgb, var(--button-bg) 90%, black 10%) !important;
+}
+.dark .hero-learn-more-button {
+  color: var(--custom-text) !important;
+  border-color: rgba(255,255,255,0.08) !important;
+}
+.dark .fullscreen-video {
+  background: var(--custom-bg) !important;
+}
+
+.fullscreen-video .video-controls {
+  position: absolute;
+  bottom: 20px;
+  left: 50%;
+  transform: translateX(-50%);
+  background: rgba(0, 0, 0, 0.8);
+  padding: 15px 25px;
+  border-radius: 50px;
+  backdrop-filter: blur(10px);
+}
+
+/* Enhanced Search Input */
+.search-input:focus {
+  box-shadow: 0 0 0 3px rgba(0, 245, 212, 0.1);
+  border-color: var(--custom-teal);
+}
+
+/* Suggestion Item Hover Effects */
+.suggestion-item {
+  transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.suggestion-item:hover {
+  transform: translateX(4px);
+}
+
+.suggestion-item.selected {
+  transform: translateX(4px);
+  box-shadow: 0 2px 8px rgba(0, 245, 212, 0.2);
+}
+
+/* Pulse Animation for Online Status */
+@keyframes pulse {
+  0%, 100% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0.5;
+  }
+}
+
+.pulse {
+  animation: pulse 2s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+}

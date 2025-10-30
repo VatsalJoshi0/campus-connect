@@ -1,0 +1,59 @@
+CampusConnect - Complete Documentation
+
+Table of Contents
+1. Introduction
+2. Technical Overview
+3. User Guide
+4. Architecture & Implementation
+5. Setup & Development
+
+Introduction
+
+About CampusConnect
+CampusConnect is a comprehensive event networking platform designed for university students and professionals. It bridges the gap between academic learning and professional networking by providing a unified platform for events, live sessions, and professional connections.
+
+Key Features
+• Event Management & Participation
+• Live Virtual Sessions
+• Professional Networking
+• Real-time Communication
+• Profile Management
+• Theme Customization
+
+Technical Overview
+
+Technology Stack
+
+Frontend Technologies
+• React 18
+  - Modern functional components
+  - Hooks-based architecture
+  - Context API for state management
+  - Custom hooks for reusable logic
+
+• Styling & UI
+  - Tailwind CSS for utility-first styling
+  - Custom CSS variables for theming
+  - Material Icons for consistent iconography
+  - Responsive design principles
+
+• State Management
+  - Context API for global state
+  - Local Storage for persistence
+  - Custom hooks for local state
+
+• Routing & Navigation
+  - React Router v6
+  - Protected routes
+  - Dynamic route handling
+
+Please see the images in the Designs folder for visual references of the interfaces:
+- Home- Light.png and Home-Dark.png: Homepage views in different themes
+- User Profile.png: User profile interface
+- Network.png: Networking interface
+- Live - Session.png: Live session view
+- Sessions - List.png: Available sessions
+- Settings-1.png, Settings-2.png, Settings-3.png: Settings interfaces
+- Real Time Chat.png: Messaging interface
+- Design Event Networking App.png: Design system overview
+- Diagram.png: System architecture diagram
