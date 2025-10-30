@@ -1,5 +1,5 @@
 import React from 'react';
-import { HashRouter as Router, Routes, Route } from 'react-router-dom';
+import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-dom';
 import { ThemeProvider } from './contexts/ThemeContext';
 import { AuthProvider } from './contexts/AuthContext';
 import { NetworkingProvider } from './contexts/NetworkingContext';
@@ -24,7 +24,7 @@ const App = () => (
       <AuthProvider>
         <NetworkingProvider>
           <NotificationProvider>
-            <Router>
+            <Router basename={process.env.PUBLIC_URL}>
               <div className="bg-custom-bg text-custom-text min-h-screen transition-theme">
                 <Routes>
                   <Route path="/" element={<HomePage />} />
