@@ -37,8 +37,7 @@ const UserAvatar = ({
     return names[0][0].toUpperCase();
   };
 
-    // Gradient class is now used directly in the component
-  const gradientClass = gradientClasses[Math.floor(Math.random() * gradientClasses.length)];
+    // No gradient classes needed anymore, using custom-teal background
 
   const avatarElement = (
     <div
