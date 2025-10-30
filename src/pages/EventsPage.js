@@ -8,21 +8,15 @@ const EventsPage = () => {
   const [searchQuery, setSearchQuery] = useState('');
   const [sortBy, setSortBy] = useState('date');
 
-  const events = [
+  const events = useMemo(() => [
     {
       id: 1,
-      title: 'AI Development Workshop',
-      description: 'Learn practical AI development skills with hands-on projects and expert guidance.',
-      date: 'April 28, 2025',
-      time: '2:00 PM - 5:00 PM',
-      location: 'Tech Hub, Building C',
-      image: 'https://lh3.googleusercontent.com/aida-public/AB6AXuCBg6zQMQanqgVj2NyH3rT1kVx7qUCdehCj-vYrmU9o9KKirKfWWo__aSmMoltPkMYgCwjdVi9oSEo4EWcGly3L4AlIblnNEQWada_zYj49hCExk9GT5H4yk12N4tKQVby2KF82Ar3Qi-TXWAs0HqmJvOn65dvGabKrIYmZ9gzn66a6OIW_PKx1Q3ZxK8NDRVUbDINSw0c_bthLtfqv9nZEkhaq5FWsARe-5EFtUq74Y6dpxS7A4M7Nw973F7CuJTVkiXgJT4-K5iLw',
-      category: 'Workshop',
-      categoryColor: 'bg-custom-orange',
-      attendees: 45,
-      maxAttendees: 50,
-      tags: ['AI', 'Machine Learning', 'Python'],
-      organizer: 'Tech Club'
+      title: "Tech Hackathon 2023",
+      date: "2023-12-15",
+      time: "09:00 AM",
+      location: "Main Campus Hall",
+      category: "Technology",
+      attendees: 120,
     },
     {
       id: 2,

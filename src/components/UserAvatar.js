@@ -37,27 +37,8 @@ const UserAvatar = ({
     return names[0][0].toUpperCase();
   };
 
-  const getGradientClass = () => {
-    // Generate consistent gradient based on user name
-    const name = user?.name || 'User';
-    const hash = name.split('').reduce((a, b) => {
-      a = ((a << 5) - a) + b.charCodeAt(0);
-      return a & a;
-    }, 0);
-    
-    const gradients = [
-      'gradient-purple-pink',
-      'gradient-blue-teal',
-      'gradient-green-blue',
-      'gradient-yellow-red',
-      'gradient-indigo-purple',
-      'gradient-pink-rose',
-      'gradient-teal-cyan',
-      'gradient-orange-yellow'
-    ];
-    
-    return gradients[Math.abs(hash) % gradients.length];
-  };
+    // Gradient class is now used directly in the component
+  const gradientClass = gradientClasses[Math.floor(Math.random() * gradientClasses.length)];
 
   const avatarElement = (
     <div
