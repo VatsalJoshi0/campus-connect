@@ -2,7 +2,14 @@ import React, { useState, useEffect, useRef, useCallback, useMemo } from 'react'
 import { useNavigate } from 'react-router-dom';
 import { useNotification } from '../contexts/NotificationContext';
 
-const SearchSuggestions = ({ isOpen, onClose, searchQuery }) => {
+const SearchSuggestions = ({ 
+  isOpen, 
+  onClose, 
+  searchQuery,
+  recentSearches = [],
+  onRecentSearchClick,
+  onClearRecentSearches
+}) => {
   const navigate = useNavigate();
   const { showInfo } = useNotification();
   const [selectedIndex, setSelectedIndex] = useState(-1);
@@ -110,21 +117,72 @@ const SearchSuggestions = ({ isOpen, onClose, searchQuery }) => {
   const showDefaultSuggestions = !searchQuery.trim();
 
   return (
-    <div className="absolute top-full left-0 right-0 mt-2 bg-custom-bg-2 border border-custom-border rounded-lg shadow-xl z-50 max-h-96 overflow-y-auto search-suggestions">
+    <div className="fixed inset-x-4 top-16 md:absolute md:inset-x-0 md:top-full md:mt-2 bg-custom-bg-2 border border-custom-border rounded-lg shadow-2xl z-50 max-h-[80vh] md:max-h-96 overflow-y-auto search-suggestions backdrop-blur-lg bg-opacity-95">
       {searchQuery.trim() && allSuggestions.length === 0 ? (
-        <div className="p-4 text-center text-custom-text-secondary">
-          <span className="material-icons text-2xl mb-2 block">search_off</span>
-          <p>No results found for "{searchQuery}"</p>
-          <p className="text-sm mt-1">Try searching for events, people, or topics</p>
+        <div className="p-6 text-center text-custom-text-secondary">
+          <span className="material-icons text-3xl mb-3 block">search_off</span>
+          <p className="font-medium">No results found for "{searchQuery}"</p>
+          <p className="text-sm mt-2 text-custom-text-secondary">
+            Try adjusting your search terms or explore suggested categories below
+          </p>
+          <div className="mt-4 flex flex-wrap justify-center gap-2">
+            <button 
+              onClick={() => handleSuggestionClick({ type: 'event', category: 'Workshop' })}
+              className="px-3 py-1.5 rounded-full bg-custom-bg text-custom-text-secondary text-sm hover:bg-custom-teal hover:text-black transition-all duration-200"
+            >
+              Workshops
+            </button>
+            <button 
+              onClick={() => handleSuggestionClick({ type: 'event', category: 'Networking' })}
+              className="px-3 py-1.5 rounded-full bg-custom-bg text-custom-text-secondary text-sm hover:bg-custom-teal hover:text-black transition-all duration-200"
+            >
+              Networking
+            </button>
+            <button 
+              onClick={() => handleSuggestionClick({ type: 'person', role: 'Developer' })}
+              className="px-3 py-1.5 rounded-full bg-custom-bg text-custom-text-secondary text-sm hover:bg-custom-teal hover:text-black transition-all duration-200"
+            >
+              Developers
+            </button>
+          </div>
         </div>
       ) : (
         <>
+          {/* Recent Searches */}
+          {recentSearches.length > 0 && showDefaultSuggestions && (
+            <div className="p-2 border-b border-custom-border">
+              <div className="px-3 py-2 flex items-center justify-between">
+                <div className="text-xs font-semibold text-custom-text-secondary uppercase tracking-wider">
+                  Recent Searches
+                </div>
+                <button
+                  onClick={onClearRecentSearches}
+                  className="text-xs text-custom-blue hover:text-custom-teal transition-colors duration-200"
+                >
+                  Clear All
+                </button>
+              </div>
+              <div className="px-3 py-2 flex flex-wrap gap-2">
+                {recentSearches.map((search, index) => (
+                  <button
+                    key={index}
+                    onClick={() => onRecentSearchClick(search)}
+                    className="px-3 py-1.5 rounded-full bg-custom-bg text-custom-text-secondary text-sm hover:bg-custom-teal hover:text-black transition-all duration-200 flex items-center gap-1.5"
+                  >
+                    <span className="material-icons text-base">history</span>
+                    {search}
+                  </button>
+                ))}
+              </div>
+            </div>
+          )}
+
           {/* Header for default suggestions */}
           {showDefaultSuggestions && (
             <div className="p-3 border-b border-custom-border">
               <div className="text-sm font-medium text-custom-text flex items-center space-x-2">
                 <span className="material-icons text-lg text-custom-teal">trending_up</span>
-                <span>Popular searches</span>
+                <span>Trending Now</span>
               </div>
             </div>
           )}

@@ -12,12 +12,12 @@ const Toast = ({ notification }) => {
     return () => clearTimeout(timer);
   }, []);
 
-  const handleClose = () => {
+  const handleClose = React.useCallback(() => {
     setIsLeaving(true);
     setTimeout(() => {
       removeNotification(notification.id);
     }, 300);
-  };
+  }, [removeNotification, notification.id]);
 
   const getIcon = () => {
     switch (notification.type) {
@@ -61,41 +61,107 @@ const Toast = ({ notification }) => {
     }
   };
 
+  const getProgressColor = () => {
+    switch (notification.type) {
+      case 'success':
+        return 'bg-green-500 dark:bg-green-400';
+      case 'error':
+        return 'bg-red-500 dark:bg-red-400';
+      case 'warning':
+        return 'bg-yellow-500 dark:bg-yellow-400';
+      default:
+        return 'bg-blue-500 dark:bg-blue-400';
+    }
+  };
+
+  const [progress, setProgress] = useState(100);
+
+  useEffect(() => {
+    if (notification.duration) {
+      const timer = setInterval(() => {
+        setProgress((prev) => {
+          if (prev <= 0) {
+            clearInterval(timer);
+            handleClose();
+            return 0;
+          }
+          return prev - (100 / (notification.duration / 100));
+        });
+      }, 100);
+
+      return () => clearInterval(timer);
+    }
+  }, [notification.duration, handleClose]);
+
   return (
     <div
       className={`
-        toast-notification
+        toast-notification group
         ${isVisible && !isLeaving ? 'toast-enter' : ''}
         ${isLeaving ? 'toast-exit' : ''}
-        max-w-sm w-full border rounded-lg shadow-lg p-4 mb-4
+        max-w-sm w-full border rounded-xl shadow-lg backdrop-blur-lg
         ${getColorClasses()}
         transform transition-all duration-300 ease-in-out
+        hover:scale-102 hover:shadow-xl
       `}
+      role="alert"
+      aria-live="assertive"
     >
-      <div className="flex items-start">
-        <div className="flex-shrink-0">
-          {getIcon()}
+      <div className="p-4">
+        <div className="flex items-start">
+          <div className="flex-shrink-0 p-1">
+            {getIcon()}
+          </div>
+          <div className="ml-3 flex-1 pt-0.5">
+            {notification.title && (
+              <h4 className="text-sm font-semibold leading-5 mb-1">
+                {notification.title}
+              </h4>
+            )}
+            <p className="text-sm opacity-90">
+              {notification.message}
+            </p>
+            {notification.action && (
+              <button
+                onClick={notification.action.onClick}
+                className="mt-2 text-sm font-medium underline hover:no-underline focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-current rounded"
+              >
+                {notification.action.text}
+              </button>
+            )}
+          </div>
+          <div className="ml-4 flex flex-col items-center space-y-2">
+            <button
+              onClick={handleClose}
+              className="text-current opacity-60 hover:opacity-100 transition-opacity p-1 hover:bg-black hover:bg-opacity-10 rounded-full"
+              aria-label="Close notification"
+            >
+              <svg className="w-4 h-4" fill="currentColor" viewBox="0 0 20 20">
+                <path fillRule="evenodd" d="M4.293 4.293a1 1 0 011.414 0L10 8.586l4.293-4.293a1 1 0 111.414 1.414L11.414 10l4.293 4.293a1 1 0 01-1.414 1.414L10 11.414l-4.293 4.293a1 1 0 01-1.414-1.414L8.586 10 4.293 5.707a1 1 0 010-1.414z" clipRule="evenodd" />
+              </svg>
+            </button>
+            {notification.canUndo && (
+              <button
+                onClick={() => notification.onUndo?.()}
+                className="text-current opacity-60 hover:opacity-100 transition-opacity p-1 hover:bg-black hover:bg-opacity-10 rounded-full"
+                aria-label="Undo action"
+              >
+                <svg className="w-4 h-4" fill="currentColor" viewBox="0 0 20 20">
+                  <path fillRule="evenodd" d="M8 4a4 4 0 100 8 4 4 0 000-8zM2 8a6 6 0 1110.89 3.476l4.817 4.817a1 1 0 01-1.414 1.414l-4.816-4.816A6 6 0 012 8z" clipRule="evenodd" />
+                </svg>
+              </button>
+            )}
+          </div>
         </div>
-        <div className="ml-3 flex-1">
-          {notification.title && (
-            <h4 className="text-sm font-semibold mb-1">
-              {notification.title}
-            </h4>
-          )}
-          <p className="text-sm">
-            {notification.message}
-          </p>
-        </div>
-        <button
-          onClick={handleClose}
-          className="ml-4 flex-shrink-0 text-current opacity-60 hover:opacity-100 transition-opacity"
-          aria-label="Close notification"
-        >
-          <svg className="w-4 h-4" fill="currentColor" viewBox="0 0 20 20">
-            <path fillRule="evenodd" d="M4.293 4.293a1 1 0 011.414 0L10 8.586l4.293-4.293a1 1 0 111.414 1.414L11.414 10l4.293 4.293a1 1 0 01-1.414 1.414L10 11.414l-4.293 4.293a1 1 0 01-1.414-1.414L8.586 10 4.293 5.707a1 1 0 010-1.414z" clipRule="evenodd" />
-          </svg>
-        </button>
       </div>
+      {notification.duration && (
+        <div className="relative h-0.5 w-full overflow-hidden rounded-b-xl bg-black/10 dark:bg-white/10">
+          <div
+            className={`absolute bottom-0 left-0 h-full transition-all duration-100 ${getProgressColor()}`}
+            style={{ width: `${progress}%` }}
+          />
+        </div>
+      )}
     </div>
   );
 };

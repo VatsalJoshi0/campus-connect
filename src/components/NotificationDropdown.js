@@ -55,68 +55,117 @@ const NotificationDropdown = ({ notifications, onClose }) => {
   return (
     <div
       ref={dropdownRef}
-      className="absolute right-0 top-full mt-2 w-80 bg-custom-bg-2 border border-custom-border rounded-lg shadow-lg z-50 max-h-96 overflow-y-auto"
+      className="fixed inset-x-4 top-16 md:absolute md:inset-auto md:right-0 md:top-full md:mt-2 md:w-96 bg-custom-bg-2 border border-custom-border rounded-lg shadow-2xl z-50 max-h-[80vh] md:max-h-96 overflow-hidden backdrop-blur-lg bg-opacity-95 transition-all duration-300 transform"
     >
-      <div className="p-4 border-b border-custom-border">
+      <div className="p-4 border-b border-custom-border flex items-center justify-between sticky top-0 bg-custom-bg-2 z-10">
         <h3 className="text-lg font-semibold text-custom-text">Notifications</h3>
+        <button
+          onClick={onClose}
+          className="p-1 hover:bg-custom-bg rounded-full transition-colors"
+          aria-label="Close notifications"
+        >
+          <span className="material-icons text-custom-text-secondary">close</span>
+        </button>
       </div>
-      
-      <div className="py-2">
+
+      <div className="overflow-y-auto max-h-[calc(80vh-4rem)] md:max-h-[400px]">
         {notifications && notifications.length > 0 ? (
-          notifications.map((notification) => (
-            <div
-              key={notification.id}
-              className={`px-4 py-3 hover:bg-custom-bg cursor-pointer border-l-4 transition-colors ${
-                notification.read 
-                  ? 'border-transparent' 
-                  : 'border-custom-teal bg-custom-teal bg-opacity-5'
-              }`}
-              onClick={() => handleNotificationClick(notification)}
-            >
-              <div className="flex items-start space-x-3">
-                <div className={`p-2 rounded-full ${
-                  notification.read ? 'bg-custom-bg' : 'bg-custom-teal bg-opacity-20'
-                }`}>
-                  <span className={`material-icons text-sm ${
-                    notification.read ? 'text-custom-text-secondary' : 'text-custom-teal'
+          <div className="divide-y divide-custom-border">
+            {notifications.map((notification) => (
+              <div
+                key={notification.id}
+                className={`group hover:bg-custom-bg cursor-pointer transition-all duration-200 ${
+                  notification.read 
+                    ? 'opacity-75 hover:opacity-100' 
+                    : 'bg-custom-teal bg-opacity-5'
+                }`}
+                onClick={() => handleNotificationClick(notification)}
+              >
+                <div className="px-4 py-3 flex items-start space-x-3">
+                  <div className={`p-2 rounded-full transition-colors ${
+                    notification.read 
+                      ? 'bg-custom-bg group-hover:bg-custom-teal group-hover:bg-opacity-10' 
+                      : 'bg-custom-teal bg-opacity-20'
                   }`}>
-                    {getNotificationIcon(notification.type)}
-                  </span>
+                    <span className={`material-icons text-xl ${
+                      notification.read 
+                        ? 'text-custom-text-secondary group-hover:text-custom-teal' 
+                        : 'text-custom-teal'
+                    }`}>
+                      {getNotificationIcon(notification.type)}
+                    </span>
+                  </div>
+                  
+                  <div className="flex-1 min-w-0">
+                    <p className={`text-sm leading-5 ${
+                      notification.read ? 'text-custom-text-secondary' : 'text-custom-text font-medium'
+                    }`}>
+                      {notification.message}
+                    </p>
+                    <div className="mt-1 flex items-center gap-2">
+                      <p className="text-xs text-custom-text-secondary">
+                        {formatTime(notification.timestamp)}
+                      </p>
+                      {notification.type === 'event' && (
+                        <span className="inline-flex items-center px-2 py-0.5 rounded text-xs font-medium bg-custom-teal bg-opacity-10 text-custom-teal">
+                          Event
+                        </span>
+                      )}
+                    </div>
+                  </div>
+                  
+                  {!notification.read && (
+                    <div className="flex flex-col items-center gap-1">
+                      <div className="w-2.5 h-2.5 bg-custom-teal rounded-full"></div>
+                      <button
+                        onClick={(e) => {
+                          e.stopPropagation();
+                          markNotificationRead(notification.id);
+                        }}
+                        className="text-xs text-custom-text-secondary hover:text-custom-teal"
+                      >
+                        Mark read
+                      </button>
+                    </div>
+                  )}
                 </div>
-                
-                <div className="flex-1 min-w-0">
-                  <p className={`text-sm ${
-                    notification.read ? 'text-custom-text-secondary' : 'text-custom-text font-medium'
-                  }`}>
-                    {notification.message}
-                  </p>
-                  <p className="text-xs text-custom-text-secondary mt-1">
-                    {formatTime(notification.timestamp)}
-                  </p>
-                </div>
-                
-                {!notification.read && (
-                  <div className="w-2 h-2 bg-custom-teal rounded-full mt-2"></div>
-                )}
               </div>
-            </div>
-          ))
+            ))}
+          </div>
         ) : (
-          <div className="px-4 py-8 text-center text-custom-text-secondary">
-            <span className="material-icons text-4xl mb-2 block">notifications_none</span>
-            <p>No notifications yet</p>
+          <div className="px-4 py-12 text-center">
+            <div className="rounded-full bg-custom-bg p-3 mx-auto w-fit mb-4">
+              <span className="material-icons text-4xl text-custom-text-secondary">
+                notifications_none
+              </span>
+            </div>
+            <p className="text-custom-text font-medium mb-1">All caught up!</p>
+            <p className="text-sm text-custom-text-secondary">
+              You don't have any new notifications right now.
+            </p>
           </div>
         )}
       </div>
       
       {notifications && notifications.length > 0 && (
-        <div className="p-4 border-t border-custom-border">
-          <button
-            className="w-full text-center text-custom-teal hover:text-custom-text text-sm font-medium"
-            onClick={onClose}
-          >
-            View All Notifications
-          </button>
+        <div className="p-4 border-t border-custom-border sticky bottom-0 bg-custom-bg-2">
+          <div className="flex justify-between items-center">
+            <button
+              className="text-custom-teal hover:text-custom-text text-sm font-medium transition-colors"
+              onClick={() => {
+                notifications.forEach(n => !n.read && markNotificationRead(n.id));
+              }}
+            >
+              Mark all as read
+            </button>
+            <button
+              className="text-custom-text hover:text-custom-teal text-sm font-medium flex items-center gap-1 transition-colors"
+              onClick={onClose}
+            >
+              View All
+              <span className="material-icons text-base">arrow_forward</span>
+            </button>
+          </div>
         </div>
       )}
     </div>

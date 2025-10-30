@@ -3,26 +3,26 @@
 @tailwind utilities;
 
 .dark {
-  --custom-bg: #0f172a !important;
-  --custom-bg-2: #1e293b !important;
-  --custom-bg-3: #334155 !important;
-  --custom-text: #f8fafc !important;
-  --custom-text-secondary: #94a3b8 !important;
-  --custom-border: #475569 !important;
-  --custom-border-2: #64748b !important;
-  --custom-blue: #3b82f6 !important;
-  --custom-teal: #06b6d4 !important;
-  --custom-orange: #f97316 !important;
-  --hero-gradient-start: rgba(15, 23, 42, 0.9) !important;
-  --hero-gradient-end: rgba(15, 23, 42, 0.7) !important;
-  --button-bg: #06b6d4 !important;
-  --button-text: #0f172a !important;
-  --shadow-color: rgba(0, 0, 0, 0.5) !important;
-  --hover-bg: rgba(255, 255, 255, 0.05) !important;
-  --active-bg: rgba(255, 255, 255, 0.1) !important;
-  --input-bg: #1e293b !important;
-  --card-bg: #1e293b !important;
-  --modal-bg: rgba(15, 23, 42, 0.95) !important;
+  --custom-bg: #0f172a;
+  --custom-bg-2: #1e293b;
+  --custom-bg-3: #334155;
+  --custom-text: #f8fafc;
+  --custom-text-secondary: #94a3b8;
+  --custom-border: #475569;
+  --custom-border-2: #64748b;
+  --custom-blue: #3b82f6;
+  --custom-teal: #06b6d4;
+  --custom-orange: #f97316;
+  --hero-gradient-start: rgba(15, 23, 42, 0.9);
+  --hero-gradient-end: rgba(15, 23, 42, 0.7);
+  --button-bg: #06b6d4;
+  --button-text: #0f172a;
+  --shadow-color: rgba(0, 0, 0, 0.5);
+  --hover-bg: rgba(255, 255, 255, 0.05);
+  --active-bg: rgba(255, 255, 255, 0.1);
+  --input-bg: #1e293b;
+  --card-bg: #1e293b;
+  --modal-bg: rgba(15, 23, 42, 0.95);
 }
 :root {
   --custom-bg: #f8fafc;
