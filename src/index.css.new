@@ -1,0 +1,60 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+.dark {
+  --custom-bg: #0f172a !important;
+  --custom-bg-2: #1e293b !important;
+  --custom-bg-3: #334155 !important;
+  --custom-text: #f8fafc !important;
+  --custom-text-secondary: #94a3b8 !important;
+  --custom-border: #475569 !important;
+  --custom-border-2: #64748b !important;
+  --custom-blue: #3b82f6 !important;
+  --custom-teal: #06b6d4 !important;
+  --custom-orange: #f97316 !important;
+  --hero-gradient-start: rgba(15, 23, 42, 0.9) !important;
+  --hero-gradient-end: rgba(15, 23, 42, 0.7) !important;
+  --button-bg: #06b6d4 !important;
+  --button-text: #0f172a !important;
+  --shadow-color: rgba(0, 0, 0, 0.5) !important;
+  --hover-bg: rgba(255, 255, 255, 0.05) !important;
+  --active-bg: rgba(255, 255, 255, 0.1) !important;
+  --input-bg: #1e293b !important;
+  --card-bg: #1e293b !important;
+  --modal-bg: rgba(15, 23, 42, 0.95) !important;
+}
+:root {
+  --custom-bg: #f8fafc;
+  --custom-bg-2: #ffffff;
+  --custom-bg-3: #f1f5f9;
+  --custom-text: #0f172a;
+  --custom-text-secondary: #64748b;
+  --custom-border: #e2e8f0;
+  --custom-border-2: #cbd5e1;
+  --custom-blue: #0077b6;
+  --custom-teal: #00f5d4;
+  --custom-orange: #ff6b6b;
+  --hero-bg-1: url("https://images.unsplash.com/photo-1523580494863-6f3031224c94?q=80&w=2070&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D");
+  --hero-bg-2: url("https://images.unsplash.com/photo-1511578314322-379afb476865?q=80&w=2070&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D");
+  --hero-bg-3: url("https://images.unsplash.com/photo-1522202176988-66273c2fd55f?q=80&w=2071&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D");
+  --hero-gradient-start: rgba(248, 250, 252, 0.9);
+  --hero-gradient-end: rgba(248, 250, 252, 0.7);
+  --button-bg: var(--custom-teal);
+  --button-text: #0f172a;
+  --shadow-color: rgba(0, 0, 0, 0.1);
+  --hover-bg: rgba(0, 0, 0, 0.05);
+  --active-bg: rgba(0, 0, 0, 0.1);
+  --input-bg: #ffffff;
+  --card-bg: #ffffff;
+  --modal-bg: rgba(255, 255, 255, 0.95);
+}
+body {
+  font-family: "Poppins", sans-serif;
+  background-color: var(--custom-bg) !important;
+  color: var(--custom-text) !important;
+  margin: 0;
+  transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+/* ... (rest of the CSS file remains the same) ... */

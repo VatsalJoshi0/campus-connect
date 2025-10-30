@@ -1,15 +1,16 @@
 import React, { useState, useMemo } from 'react';
 import Header from '../components/Header';
 import Footer from '../components/Footer';
-import { useAuth } from '../contexts/AuthContext';
+// Removed unused import
 import { useNetworking } from '../contexts/NetworkingContext';
 
 const SchedulePage = () => {
-  const { user } = useAuth();
+  // Removed unused user declaration
   const { addPoints } = useNetworking();
   const [selectedDate, setSelectedDate] = useState(new Date());
   const [viewMode, setViewMode] = useState('week'); // 'day', 'week', 'month'
-  const [showAddEvent, setShowAddEvent] = useState(false);
+  // Removed unused state variables
+  // Used by the "Add Event" button click handler
 
   // Mock schedule data
   const [scheduleEvents] = useState([
@@ -363,7 +364,7 @@ const SchedulePage = () => {
                 </div>
                 
                 <button
-                  onClick={() => setShowAddEvent(true)}
+                  onClick={() => {/* TODO: Implement add event functionality */}}
                   className="bg-custom-blue text-white px-4 py-2 rounded-lg hover:bg-blue-600 transition duration-300 flex items-center space-x-2"
                 >
                   <span className="material-icons text-sm">add</span>

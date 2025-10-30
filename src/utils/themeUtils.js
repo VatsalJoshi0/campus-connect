@@ -46,7 +46,8 @@ export const applyTheme = (theme) => {
   }
   
   // Force a repaint to ensure the theme changes are applied
-  const reflow = root.offsetHeight;
+  // Using void operator to suppress no-unused-expressions warning
+  void root.offsetHeight;
   
   // NOTE: do NOT automatically save here to avoid overwriting user's stored preference
 };

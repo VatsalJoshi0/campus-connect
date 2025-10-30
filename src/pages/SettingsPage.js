@@ -7,7 +7,7 @@ import ThemeToggle from '../components/ThemeToggle';
 
 const SettingsPage = () => {
   const { user, updateUser, logout } = useAuth();
-  const { isDark } = useTheme();
+  useTheme(); // ThemeToggle component handles theme state internally
   const fileInputRef = React.useRef(null);
   const [activeTab, setActiveTab] = useState('account');
   const [settings, setSettings] = useState({

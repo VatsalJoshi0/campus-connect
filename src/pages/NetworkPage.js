@@ -2,11 +2,11 @@ import React, { useState } from 'react';
 import Header from '../components/Header';
 import Footer from '../components/Footer';
 import QRCodeScanner from '../components/QRCodeScanner';
-import { useAuth } from '../contexts/AuthContext';
+// Removed unused import
 import { useNetworking } from '../contexts/NetworkingContext';
 
 const NetworkPage = () => {
-  const { user: currentUser } = useAuth();
+  // Removed unused user import
   const { connections, suggestedMatches, connectWithUser } = useNetworking();
   const [activeTab, setActiveTab] = useState('matches');
   const [searchQuery, setSearchQuery] = useState('');
