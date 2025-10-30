@@ -8,7 +8,7 @@ const EventsPage = () => {
   const [searchQuery, setSearchQuery] = useState('');
   const [sortBy, setSortBy] = useState('date');
 
-  const events = useMemo(() => [
+  const events = useMemo(() => ([
     {
       id: 1,
       title: "Tech Hackathon 2023",
@@ -25,7 +25,6 @@ const EventsPage = () => {
       date: 'April 30, 2025',
       time: '6:30 PM - 9:00 PM',
       location: 'University Center, Grand Hall',
-      image: 'https://lh3.googleusercontent.com/aida-public/AB6AXuDz_ZXOzbX4Gw3x4l6VVEoCLn1LhIh9TbBd_ImFql7DqqJK7jQk7Qo_Mm5uKQgwj29LHc-3NAgCPaukLFPcPKVNaTwNrzD8i0DCaZWw5oQS6_P2eBObHWbYeqwo_uewEsJ0TOHcxVL4mc_5loEWYD0XUqheAOrGzoPZ1rTj0TOrYL5vuwULGABzXR4VdZpyybFJ_EO2Z8-NkdLltDEFKZiSRfAa9uRVOyObfCvKIl-RnUmXtSOWPNbMsDf_oGWsUXNa6MGzjBQIIi7s',
       category: 'Networking',
       categoryColor: 'bg-custom-blue',
       attendees: 120,
@@ -40,7 +39,6 @@ const EventsPage = () => {
       date: 'May 5, 2025',
       time: '10:00 AM - 4:00 PM',
       location: 'Campus Recreation Center',
-      image: 'https://lh3.googleusercontent.com/aida-public/AB6AXuAd7CqyOH3Df0yGRJwIJc6FJd2SQBbMqt-vCmi8Ciq-UnhlMb7XA37WpFXo1jzSj0fh8OqisFLpZa_6qIpZl-LvwHaQBTJim6cNx17tz2ZExojYMM2bVrx55CiMtEC4sOmz_GAIJyEYGdczyGUEadH5kj7k2ZSvt8udfe0mBDdSc3MFzz8Ose4CR7QClsjbJDE3jsZUL8ap_18nftuxolZphEcvG0pghIR79HlD24Dow25vj3gsZ14bDmntsiqgrCCEbzIwZBU65vrc',
       category: 'Career Fair',
       categoryColor: 'bg-yellow-600',
       attendees: 200,
@@ -55,7 +53,6 @@ const EventsPage = () => {
       date: 'May 12-14, 2025',
       time: 'Starts at 5:00 PM',
       location: 'Innovation Center, Main Campus',
-      image: 'https://lh3.googleusercontent.com/aida-public/AB6AXuAgVmxYgfcoZks8e1dy4ql-8u_7J3Hv-tMXMURKAm6a2e4S-E1cUWNtzBPML8OpLwjwKNllEESLOXIS1Gv-kEdC51cHNqQOjOuMFsim7nQ52c5b9StFFcn1Kjh5WCiu75r1tK_LokxQAhORTvCPmeb6K5G9PJde7TBhzB6XJtvBfCK0YN0a9cpgG5pJ__0UnMy-QJpy5B-anr2m2nqjiSbCYZFIeOxs1yd9kY5wX5WgNm6n4SUKC6LUm7B7lh03MXI0Y9stbPIyCiUF',
       category: 'Hackathon',
       categoryColor: 'bg-green-600',
       attendees: 80,
@@ -70,7 +67,6 @@ const EventsPage = () => {
       date: 'May 20-22, 2025',
       time: '9:00 AM - 5:00 PM',
       location: 'Computer Lab, Building A',
-      image: 'https://images.unsplash.com/photo-1517180102446-f3ece451e9d8?w=500',
       category: 'Workshop',
       categoryColor: 'bg-custom-orange',
       attendees: 25,
@@ -85,7 +81,6 @@ const EventsPage = () => {
       date: 'June 1, 2025',
       time: '2:00 PM - 6:00 PM',
       location: 'Auditorium, Main Building',
-      image: 'https://images.unsplash.com/photo-1556761175-b413da4baf72?w=500',
       category: 'Competition',
       categoryColor: 'bg-purple-600',
       attendees: 60,
@@ -93,14 +88,13 @@ const EventsPage = () => {
       tags: ['Startup', 'Entrepreneurship', 'Pitch'],
       organizer: 'Entrepreneurship Club'
     }
-  ];
+  ]), []);
 
   const filters = ['All Events', 'Workshops', 'Networking', 'Career Fairs', 'Hackathons', 'Competitions'];
 
   const filteredEvents = useMemo(() => {
     let filtered = events;
 
-    // Filter by category
     if (activeFilter !== 'All Events') {
       const categoryMap = {
         'Workshops': 'Workshop',
@@ -112,16 +106,14 @@ const EventsPage = () => {
       filtered = filtered.filter(event => event.category === categoryMap[activeFilter]);
     }
 
-    // Filter by search query
     if (searchQuery) {
       filtered = filtered.filter(event =>
         event.title.toLowerCase().includes(searchQuery.toLowerCase()) ||
-        event.description.toLowerCase().includes(searchQuery.toLowerCase()) ||
-        event.tags.some(tag => tag.toLowerCase().includes(searchQuery.toLowerCase()))
+        event.description?.toLowerCase().includes(searchQuery.toLowerCase()) ||
+        event.tags?.some(tag => tag.toLowerCase().includes(searchQuery.toLowerCase()))
       );
     }
 
-    // Sort events
     filtered.sort((a, b) => {
       switch (sortBy) {
         case 'date':
@@ -143,7 +135,6 @@ const EventsPage = () => {
       <Header />
       
       <main className="container mx-auto px-4 lg:px-8 py-8">
-        {/* Page Header */}
         <div className="mb-8">
           <h1 className="text-4xl font-bold text-custom-text mb-2">Campus Events</h1>
           <p className="text-custom-text-secondary">
@@ -151,9 +142,7 @@ const EventsPage = () => {
           </p>
         </div>
 
-        {/* Search and Filters */}
         <div className="mb-8 space-y-4">
-          {/* Search Bar */}
           <div className="relative max-w-md">
             <span className="material-icons absolute left-3 top-1/2 -translate-y-1/2 text-custom-text-secondary">
               search
@@ -167,9 +156,7 @@ const EventsPage = () => {
             />
           </div>
 
-          {/* Filters and Sort */}
           <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
-            {/* Category Filters */}
             <div className="flex flex-wrap gap-2">
               {filters.map((filter) => (
                 <button
@@ -186,7 +173,6 @@ const EventsPage = () => {
               ))}
             </div>
 
-            {/* Sort Dropdown */}
             <div className="flex items-center space-x-4">
               <label className="text-custom-text-secondary text-sm">Sort by:</label>
               <select
@@ -202,13 +188,11 @@ const EventsPage = () => {
           </div>
         </div>
 
-        {/* Events Grid */}
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
           {filteredEvents.map((event) => (
             <div key={event.id} className="relative">
               <EventCard event={event} />
               
-              {/* Attendance Badge */}
               <div className="absolute top-4 right-4 bg-custom-bg-3 text-custom-text-secondary text-xs px-2 py-1 rounded-full border border-custom-border">
                 {event.attendees}/{event.maxAttendees}
               </div>
@@ -216,7 +200,6 @@ const EventsPage = () => {
           ))}
         </div>
 
-        {/* No Results */}
         {filteredEvents.length === 0 && (
           <div className="text-center py-12">
             <span className="material-icons text-6xl text-custom-text-secondary mb-4 block">
@@ -229,7 +212,6 @@ const EventsPage = () => {
           </div>
         )}
 
-        {/* Event Statistics */}
         <div className="mt-12 grid grid-cols-1 md:grid-cols-3 gap-6">
           <div className="bg-custom-bg-2 p-6 rounded-lg border border-custom-border text-center">
             <div className="text-3xl font-bold text-custom-teal mb-2">{events.length}</div>
