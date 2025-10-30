@@ -6,7 +6,7 @@ import { useAuth } from '../contexts/AuthContext';
 import { useNetworking } from '../contexts/NetworkingContext';
 
 const NetworkPage = () => {
-  const { user } = useAuth();
+  const { user: currentUser } = useAuth();
   const { connections, suggestedMatches, connectWithUser } = useNetworking();
   const [activeTab, setActiveTab] = useState('matches');
   const [searchQuery, setSearchQuery] = useState('');

@@ -5,7 +5,7 @@ import { useNetworking } from '../contexts/NetworkingContext';
 
 const MessagesPage = () => {
   const { user } = useAuth();
-  const { connections, messages, sendMessage } = useNetworking();
+  const { connections, sendMessage } = useNetworking();
   const [activeChat, setActiveChat] = useState(null);
   const [newMessage, setNewMessage] = useState('');
   const [activeTab, setActiveTab] = useState('direct');

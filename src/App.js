@@ -24,7 +24,7 @@ const App = () => (
       <AuthProvider>
         <NetworkingProvider>
           <NotificationProvider>
-            <Router>
+            <Router basename="/campus-connect">
               <div className="bg-custom-bg text-custom-text min-h-screen transition-theme">
                 <Routes>
                   <Route path="/" element={<HomePage />} />
