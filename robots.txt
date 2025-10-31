@@ -1,0 +1,9 @@
+# https://www.robotstxt.org/robotstxt.html
+User-agent: *
+Allow: /
+
+# Sitemap
+Sitemap: https://vatsaljoshi0.github.io/campus-connect/sitemap.xml
+
+# Crawl delay (optional)
+Crawl-delay: 10
