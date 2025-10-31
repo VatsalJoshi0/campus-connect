@@ -1000,3 +1000,156 @@ html.dark body,
 .pulse {
   animation: pulse 2s cubic-bezier(0.4, 0, 0.6, 1) infinite;
 }
+
+/* ===== ACCESSIBILITY IMPROVEMENTS ===== */
+
+/* Enhanced Focus States */
+*:focus-visible {
+  outline: 2px solid var(--custom-teal);
+  outline-offset: 2px;
+}
+
+/* Remove default outline but keep for keyboard users */
+*:focus:not(:focus-visible) {
+  outline: none;
+}
+
+/* Button Focus States */
+button:focus-visible,
+a:focus-visible,
+input:focus-visible,
+textarea:focus-visible,
+select:focus-visible {
+  outline: 2px solid var(--custom-teal);
+  outline-offset: 2px;
+  box-shadow: 0 0 0 4px rgba(6, 182, 212, 0.1);
+}
+
+/* Skip to Content Link */
+.skip-to-content {
+  position: absolute;
+  top: -100px;
+  left: 0;
+  background: var(--custom-teal);
+  color: black;
+  padding: 8px 16px;
+  text-decoration: none;
+  border-radius: 0 0 4px 0;
+  z-index: 10000;
+  font-weight: 600;
+}
+
+.skip-to-content:focus {
+  top: 0;
+}
+
+/* Screen Reader Only Text */
+.sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border-width: 0;
+}
+
+/* High Contrast Mode Support */
+@media (prefers-contrast: high) {
+  * {
+    border-color: currentColor !important;
+  }
+  
+  button,
+  a {
+    outline: 2px solid currentColor;
+    outline-offset: 2px;
+  }
+}
+
+/* Reduced Motion Support */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}
+
+/* Focus Trap for Modals */
+.modal-open {
+  overflow: hidden;
+}
+
+/* Better Touch Targets (minimum 44x44px) */
+button,
+a,
+input[type="checkbox"],
+input[type="radio"],
+.touch-target {
+  min-height: 44px;
+  min-width: 44px;
+}
+
+/* Icon-only buttons padding adjustment */
+button.icon-only {
+  padding: 12px;
+  min-width: 44px;
+  min-height: 44px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+}
+
+/* Ensure text has sufficient contrast */
+.text-contrast-check {
+  color: var(--custom-text);
+  background: var(--custom-bg);
+}
+
+/* Disabled state clarity */
+button:disabled,
+input:disabled,
+select:disabled,
+textarea:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+  filter: grayscale(30%);
+}
+
+/* Loading State */
+[aria-busy="true"] {
+  cursor: wait;
+}
+
+/* Invalid Input States */
+input:invalid,
+textarea:invalid,
+select:invalid {
+  border-color: #ef4444;
+}
+
+input:invalid:focus,
+textarea:invalid:focus,
+select:invalid:focus {
+  outline-color: #ef4444;
+  box-shadow: 0 0 0 4px rgba(239, 68, 68, 0.1);
+}
+
+/* Valid Input States */
+input:valid:not(:placeholder-shown),
+textarea:valid:not(:placeholder-shown) {
+  border-color: #10b981;
+}
+
+/* Required Field Indicator */
+.required::after {
+  content: " *";
+  color: #ef4444;
+  font-weight: bold;
+}

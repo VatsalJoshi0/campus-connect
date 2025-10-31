@@ -3,6 +3,7 @@ import Header from '../components/Header';
 import Footer from '../components/Footer';
 import HeroSection from '../components/HeroSection';
 import EventCard from '../components/EventCard';
+import OptimizedImage from '../components/OptimizedImage';
 
 const HomePage = () => {
   const [activeFilter, setActiveFilter] = useState('All Events');
@@ -122,33 +123,41 @@ const HomePage = () => {
             {/* Profile Card */}
             <div className="bg-custom-bg-2 p-6 rounded-lg border border-custom-border profile-card">
               <div className="relative mb-4">
-                <img
-                  alt="Profile background"
-                  className="h-24 w-full object-cover rounded-t-lg"
+                <OptimizedImage
                   src="https://lh3.googleusercontent.com/aida-public/AB6AXuDDkQr6zs80BeF8NMXEHhBCYayaNjv8FmqbAp_rlLJdgZ9kb_r1x_2pYYM-E79zu2doSHNuTZfdWUvC87jWmV6gMMfOtvXl4IQRQqm_VPhFwpEp1LUtEU3fgOC5omFKvXAl_2RTrSmO4SKXnP7yokbL5bOU14xekUUhD8XPoHMtDOkLWf7SM1Qs_sgil-uhnDQvmwYhz4qi8ZTRTfaTzGzuV_nqlnk1DLkSXIsrrLgpld0Xn9qJZXxZ526Cjyt5Hao5wf2taKIL9axC"
+                  alt="Vatsal Joshi profile background - Campus Connect"
+                  width={400}
+                  height={96}
+                  className="h-24 w-full rounded-t-lg"
+                  loading="eager"
+                  priority={true}
                 />
-                <div className="profile-avatar bg-custom-teal text-button" aria-hidden="true">VJ</div>
-                <button className="absolute top-2 right-2 text-sm text-custom-text bg-black bg-opacity-50 px-2 py-1 rounded">
+                <div className="profile-avatar bg-custom-teal text-button" role="img" aria-label="User avatar with initials VJ">VJ</div>
+                <button 
+                  className="absolute top-2 right-2 text-sm text-custom-text bg-black bg-opacity-50 px-2 py-1 rounded hover:bg-opacity-70 transition-colors focus:outline-none focus:ring-2 focus:ring-custom-teal focus:ring-offset-2"
+                  aria-label="Edit your profile"
+                  type="button"
+                >
                   Edit Profile
                 </button>
               </div>
               <div className="text-center pt-10">
-                <h3 className="text-xl font-bold">Vatsal Joshi</h3>
-                <p className="text-custom-text-secondary">Computer Engineering, 2nd Year</p>
+                <h3 className="text-xl font-bold" id="user-profile-name">Vatsal Joshi</h3>
+                <p className="text-custom-text-secondary" aria-label="Student information">Computer Engineering, 2nd Year</p>
                 <p className="text-custom-text-secondary text-sm">Drs. Kiran & Pallavi Patel Global University</p>
               </div>
-              <div className="flex justify-around my-6 text-center">
+              <div className="flex justify-around my-6 text-center" role="group" aria-label="Profile statistics">
                 <div>
-                  <p className="text-2xl font-bold">42</p>
-                  <p className="text-custom-text-secondary text-sm">Connections</p>
+                  <p className="text-2xl font-bold" aria-label="42 connections">42</p>
+                  <p className="text-custom-text-secondary text-sm" aria-hidden="true">Connections</p>
                 </div>
                 <div>
-                  <p className="text-2xl font-bold">12</p>
-                  <p className="text-custom-text-secondary text-sm">Following</p>
+                  <p className="text-2xl font-bold" aria-label="12 following">12</p>
+                  <p className="text-custom-text-secondary text-sm" aria-hidden="true">Following</p>
                 </div>
                 <div>
-                  <p className="text-2xl font-bold">87%</p>
-                  <p className="text-custom-text-secondary text-sm">Profile</p>
+                  <p className="text-2xl font-bold" aria-label="Profile 87 percent complete">87%</p>
+                  <p className="text-custom-text-secondary text-sm" aria-hidden="true">Profile</p>
                 </div>
               </div>
               <div className="flex flex-wrap justify-center gap-2 text-xs mb-6">
@@ -156,7 +165,11 @@ const HomePage = () => {
                 <span className="bg-green-100 text-green-800 px-2 py-1 rounded-full">Web Development</span>
                 <span className="bg-indigo-100 text-indigo-800 px-2 py-1 rounded-full">UI/UX Design</span>
               </div>
-              <button className="w-full bg-custom-blue text-white py-3 rounded-lg font-semibold hover:bg-blue-600 transition duration-300">
+              <button 
+                className="w-full bg-custom-blue text-white py-3 rounded-lg font-semibold hover:bg-blue-600 transition duration-300 focus:outline-none focus:ring-2 focus:ring-custom-blue focus:ring-offset-2"
+                type="button"
+                aria-label="Complete your profile to unlock all features"
+              >
                 Complete Your Profile
               </button>
             </div>
@@ -172,21 +185,25 @@ const HomePage = () => {
                   <div key={user.id} className="flex items-center justify-between">
                     <div className="flex items-center">
                       <div className="relative">
-                        <div className="active-now-avatar">
-                          <span className="text-white font-bold">{user.initials}</span>
+                        <div className="active-now-avatar" role="img" aria-label={`${user.name} avatar`}>
+                          <span className="text-white font-bold" aria-hidden="true">{user.initials}</span>
                         </div>
-                        <span className="active-status"></span>
+                        <span className="active-status" aria-label="Online now"></span>
                       </div>
                       <div className="ml-3">
                         <p className="font-semibold">{user.name}</p>
-                        <p className="text-xs text-custom-text-secondary">{user.lastSeen}</p>
+                        <p className="text-xs text-custom-text-secondary" aria-label={`Last seen ${user.lastSeen}`}>{user.lastSeen}</p>
                       </div>
                     </div>
-                    <button className="text-custom-text-secondary hover:text-custom-text">
-                      <span className="material-icons">chat_bubble_outline</span>
+                    <button 
+                      className="text-custom-text-secondary hover:text-custom-text focus:outline-none focus:ring-2 focus:ring-custom-teal focus:ring-offset-2 rounded p-1"
+                      type="button"
+                      aria-label={`Send message to ${user.name}`}
+                    >
+                      <span className="material-icons" aria-hidden="true">chat_bubble_outline</span>
                     </button>
                   </div>
-                ))}
+                ))})
               </div>
             </div>
 
@@ -241,7 +258,11 @@ const HomePage = () => {
                   ))}
                 </div>
                 <p className="text-xs text-gray-500 mb-3">{person.connections}</p>
-                <button className="w-full bg-custom-blue text-white py-2 rounded-lg font-semibold hover:bg-blue-600 transition duration-300">
+                <button 
+                  className="w-full bg-custom-blue text-white py-2 rounded-lg font-semibold hover:bg-blue-600 transition duration-300 focus:outline-none focus:ring-2 focus:ring-custom-blue focus:ring-offset-2"
+                  type="button"
+                  aria-label={`Connect with ${person.name}`}
+                >
                   Connect
                 </button>
               </div>
