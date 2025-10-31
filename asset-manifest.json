@@ -1,13 +1,13 @@
 {
   "files": {
-    "main.css": "/campus-connect/static/css/main.34ce8170.css",
-    "main.js": "/campus-connect/static/js/main.a860045e.js",
+    "main.css": "/campus-connect/static/css/main.43ad9b06.css",
+    "main.js": "/campus-connect/static/js/main.f674c494.js",
     "index.html": "/campus-connect/index.html",
-    "main.34ce8170.css.map": "/campus-connect/static/css/main.34ce8170.css.map",
-    "main.a860045e.js.map": "/campus-connect/static/js/main.a860045e.js.map"
+    "main.43ad9b06.css.map": "/campus-connect/static/css/main.43ad9b06.css.map",
+    "main.f674c494.js.map": "/campus-connect/static/js/main.f674c494.js.map"
   },
   "entrypoints": [
-    "static/css/main.34ce8170.css",
-    "static/js/main.a860045e.js"
+    "static/css/main.43ad9b06.css",
+    "static/js/main.f674c494.js"
   ]
 }
