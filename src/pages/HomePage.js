@@ -1,15 +1,41 @@
-import React, { useState } from 'react';
+import React, { useState, useMemo, useCallback } from 'react';
+import { useNavigate } from 'react-router-dom';
 import Header from '../components/Header';
 import Footer from '../components/Footer';
 import HeroSection from '../components/HeroSection';
 import EventCard from '../components/EventCard';
 import OptimizedImage from '../components/OptimizedImage';
+import SkeletonLoader from '../components/SkeletonLoader';
+import { useNotification } from '../contexts/NotificationContext';
 
 const HomePage = () => {
+  const navigate = useNavigate();
+  const { showSuccess, showInfo } = useNotification();
+  
+  // State management
   const [activeFilter, setActiveFilter] = useState('All Events');
+  const [isLoading, setIsLoading] = useState(true);
+  const [searchQuery, setSearchQuery] = useState('');
+  const [connectedUsers, setConnectedUsers] = useState([]);
 
-  const events = [
-    {
+  // Loading effect
+  React.useEffect(() => {
+    const timer = setTimeout(() => {
+      setIsLoading(false);
+    }, 1000);
+    return () => clearTimeout(timer);
+  }, []);
+
+  // Memoized handlers
+  const handleFilterChange = useCallback((filter) => {
+    setActiveFilter(filter);
+  }, []);
+
+  const handleSearch = useCallback((query) => {
+    setSearchQuery(query);
+  }, []);
+
+  const events = useMemo(() => [{
       id: 1,
       title: 'AI Development Workshop',
       description: 'Learn practical AI development skills with hands-on projects and expert guidance.',
@@ -53,13 +79,13 @@ const HomePage = () => {
       category: 'Hackathon',
       categoryColor: 'bg-green-600'
     }
-  ];
+  ], []);
 
   const filters = ['All Events', 'Workshops', 'Networking', 'Career Fairs', 'Hackathons', 'Seminars'];
 
   const activeUsers = [
     { id: 1, name: 'Yagnik Patel', initials: 'YP', lastSeen: '1 min ago' },
-    { id: 2, name: 'Darpan Agrawal', initials: 'JB', lastSeen: '3 min ago' },
+    { id: 2, name: 'Darpan Agrawal', initials: 'DA', lastSeen: '3 min ago' },
     { id: 3, name: 'Darsh Ayde', initials: 'DA', lastSeen: '4 min ago' },
     { id: 4, name: 'Meet Shah', initials: 'MS', lastSeen: '5 min ago' }
   ];
@@ -76,6 +102,46 @@ const HomePage = () => {
     { id: 3, name: 'Mahek Sachdev', initials: 'MS', field: 'Computer Engineering, 2nd Year', skills: ['Web Dev', 'Frontend Developer'], connections: '1 mutual connection' }
   ];
 
+  // Navigation handlers
+  const handleViewAllActiveUsers = useCallback(() => {
+    showInfo('Redirecting to messages...');
+    setTimeout(() => navigate('/messages'), 500);
+  }, [navigate, showInfo]);
+
+  const handleViewCalendar = useCallback(() => {
+    showInfo('Opening your schedule...');
+    setTimeout(() => navigate('/schedule'), 500);
+  }, [navigate, showInfo]);
+
+  const handleCompleteProfile = useCallback(() => {
+    showInfo('Redirecting to profile...');
+    setTimeout(() => navigate('/profile'), 500);
+  }, [navigate, showInfo]);
+
+  const handleEditProfile = useCallback(() => {
+    showInfo('Opening profile editor...');
+    setTimeout(() => navigate('/profile'), 500);
+  }, [navigate, showInfo]);
+
+  const handleSeeAllPeople = useCallback(() => {
+    showInfo('Exploring network...');
+    setTimeout(() => navigate('/network'), 500);
+  }, [navigate, showInfo]);
+
+  const handleConnect = useCallback((person) => {
+    if (connectedUsers.includes(person.id)) {
+      showInfo(`You are already connected with ${person.name}`);
+    } else {
+      setConnectedUsers(prev => [...prev, person.id]);
+      showSuccess(`Connection request sent to ${person.name}! 🎉`);
+    }
+  }, [connectedUsers, showSuccess, showInfo]);
+
+  const handleMessageUser = useCallback((user) => {
+    showInfo(`Opening chat with ${user.name}...`);
+    setTimeout(() => navigate('/messages'), 500);
+  }, [navigate, showInfo]);
+
   return (
     <div className="bg-custom-bg text-custom-text min-h-screen transition-theme">
       <Header />
@@ -87,12 +153,20 @@ const HomePage = () => {
             <div className="flex items-center justify-between mb-6">
               <h2 className="text-3xl font-bold">Upcoming Events</h2>
               <div className="flex items-center space-x-4">
-                <button className="flex items-center bg-custom-bg-2 px-4 py-2 rounded-lg text-custom-text border border-custom-border">
-                  <span className="material-icons mr-2">filter_list</span> Filter
-                </button>
-                <button className="flex items-center bg-custom-bg-2 px-4 py-2 rounded-lg text-custom-text border border-custom-border">
-                  <span className="material-icons mr-2">sort</span> Sort By
-                </button>
+                <button 
+                className="flex items-center bg-custom-bg-2 px-4 py-2 rounded-lg text-custom-text border border-custom-border hover:bg-custom-bg hover:border-custom-teal transition-all duration-300 transform hover:scale-105 focus:outline-none focus:ring-2 focus:ring-custom-teal focus:ring-offset-2"
+                aria-label="Open filter options"
+              >
+                <span className="material-icons mr-2">filter_list</span>
+                <span>Filter</span>
+              </button>
+              <button 
+                className="flex items-center bg-custom-bg-2 px-4 py-2 rounded-lg text-custom-text border border-custom-border hover:bg-custom-bg hover:border-custom-teal transition-all duration-300 transform hover:scale-105 focus:outline-none focus:ring-2 focus:ring-custom-teal focus:ring-offset-2"
+                aria-label="Open sort options"
+              >
+                <span className="material-icons mr-2">sort</span>
+                <span>Sort By</span>
+              </button>
               </div>
             </div>
             
@@ -113,15 +187,35 @@ const HomePage = () => {
             </div>
             
             <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-              {events.map((event) => (
-                <EventCard key={event.id} event={event} />
-              ))}
+              {isLoading ? (
+                // Loading skeleton
+                [...Array(4)].map((_, index) => (
+                  <div key={`skeleton-${index}`} className="transform transition-all duration-300">
+                    <SkeletonLoader type="event-card" />
+                  </div>
+                ))
+              ) : events.length > 0 ? (
+                events.map((event) => (
+                  <div 
+                    key={event.id} 
+                    className="transform transition-all duration-300 hover:scale-105 hover:-translate-y-1"
+                  >
+                    <EventCard event={event} />
+                  </div>
+                ))
+              ) : (
+                <div className="col-span-2 text-center py-12">
+                  <span className="material-icons text-6xl text-custom-text-secondary mb-4">event_busy</span>
+                  <h3 className="text-xl font-semibold text-custom-text mb-2">No events found</h3>
+                  <p className="text-custom-text-secondary">Check back later for upcoming events</p>
+                </div>
+              )}
             </div>
           </div>
           
           <aside className="w-full lg:w-1/3 space-y-8">
             {/* Profile Card */}
-            <div className="bg-custom-bg-2 p-6 rounded-lg border border-custom-border profile-card">
+            <div className="bg-custom-bg-2 p-6 rounded-lg border border-custom-border profile-card card-hover">
               <div className="relative mb-4">
                 <OptimizedImage
                   src="https://lh3.googleusercontent.com/aida-public/AB6AXuDDkQr6zs80BeF8NMXEHhBCYayaNjv8FmqbAp_rlLJdgZ9kb_r1x_2pYYM-E79zu2doSHNuTZfdWUvC87jWmV6gMMfOtvXl4IQRQqm_VPhFwpEp1LUtEU3fgOC5omFKvXAl_2RTrSmO4SKXnP7yokbL5bOU14xekUUhD8XPoHMtDOkLWf7SM1Qs_sgil-uhnDQvmwYhz4qi8ZTRTfaTzGzuV_nqlnk1DLkSXIsrrLgpld0Xn9qJZXxZ526Cjyt5Hao5wf2taKIL9axC"
@@ -132,14 +226,24 @@ const HomePage = () => {
                   loading="eager"
                   priority={true}
                 />
-                <div className="profile-avatar bg-custom-teal text-button" role="img" aria-label="User avatar with initials VJ">VJ</div>
-                <button 
-                  className="absolute top-2 right-2 text-sm text-custom-text bg-black bg-opacity-50 px-2 py-1 rounded hover:bg-opacity-70 transition-colors focus:outline-none focus:ring-2 focus:ring-custom-teal focus:ring-offset-2"
-                  aria-label="Edit your profile"
-                  type="button"
-                >
-                  Edit Profile
-                </button>
+                <div 
+                className="profile-avatar bg-custom-teal text-button shadow-lg ring-2 ring-custom-teal ring-offset-2 ring-offset-custom-bg-2" 
+                role="img" 
+                aria-label="User avatar with initials VJ"
+              >
+                VJ
+              </div>
+              <button 
+                onClick={handleEditProfile}
+                className="absolute top-2 right-2 text-sm text-white bg-custom-teal bg-opacity-90 px-3 py-1.5 rounded-lg hover:bg-opacity-100 transition-all duration-300 focus:outline-none focus:ring-2 focus:ring-custom-teal focus:ring-offset-2 transform hover:scale-105"
+                aria-label="Edit your profile"
+                type="button"
+              >
+                <span className="flex items-center space-x-1">
+                  <span className="material-icons text-sm">edit</span>
+                  <span>Edit Profile</span>
+                </span>
+              </button>
               </div>
               <div className="text-center pt-10">
                 <h3 className="text-xl font-bold" id="user-profile-name">Vatsal Joshi</h3>
@@ -166,7 +270,8 @@ const HomePage = () => {
                 <span className="bg-indigo-100 text-indigo-800 px-2 py-1 rounded-full">UI/UX Design</span>
               </div>
               <button 
-                className="w-full bg-custom-blue text-white py-3 rounded-lg font-semibold hover:bg-blue-600 transition duration-300 focus:outline-none focus:ring-2 focus:ring-custom-blue focus:ring-offset-2"
+                onClick={handleCompleteProfile}
+                className="w-full btn-primary text-white py-3 rounded-lg font-semibold focus:outline-none focus:ring-2 focus:ring-custom-blue focus:ring-offset-2"
                 type="button"
                 aria-label="Complete your profile to unlock all features"
               >
@@ -175,43 +280,81 @@ const HomePage = () => {
             </div>
 
             {/* Active Now Card */}
-            <div className="bg-custom-bg-2 p-6 rounded-lg border border-custom-border active-now-card">
-              <div className="flex justify-between items-center mb-4">
-                <h3 className="text-lg font-bold">Active Now</h3>
-                <button className="text-sm text-custom-teal hover:underline" type="button">View All</button>
+            <div className="bg-custom-bg-2 p-6 rounded-lg border border-custom-border active-now-card card-hover transform transition-all duration-300 hover:shadow-lg">
+              <div className="flex justify-between items-center mb-6">
+                <div className="flex items-center space-x-2">
+                  <h3 className="text-lg font-bold">Active Now</h3>
+                  <span className="flex h-2 w-2">
+                    <span className="animate-ping absolute inline-flex h-2 w-2 rounded-full bg-custom-teal opacity-75"></span>
+                    <span className="relative inline-flex rounded-full h-2 w-2 bg-custom-teal"></span>
+                  </span>
+                </div>
+                <button 
+                  onClick={handleViewAllActiveUsers}
+                  className="text-sm text-custom-teal hover:text-custom-teal-dark transition-colors duration-300 flex items-center space-x-1" 
+                  type="button"
+                >
+                  <span>View All</span>
+                  <span className="material-icons text-sm">arrow_forward</span>
+                </button>
               </div>
               <div className="space-y-4">
-                {activeUsers.map((user) => (
-                  <div key={user.id} className="flex items-center justify-between">
-                    <div className="flex items-center">
-                      <div className="relative">
-                        <div className="active-now-avatar" role="img" aria-label={`${user.name} avatar`}>
-                          <span className="text-white font-bold" aria-hidden="true">{user.initials}</span>
-                        </div>
-                        <span className="active-status" aria-label="Online now"></span>
-                      </div>
-                      <div className="ml-3">
-                        <p className="font-semibold">{user.name}</p>
-                        <p className="text-xs text-custom-text-secondary" aria-label={`Last seen ${user.lastSeen}`}>{user.lastSeen}</p>
-                      </div>
+                {isLoading ? (
+                  // Loading skeleton for active users
+                  [...Array(4)].map((_, index) => (
+                    <div key={`skeleton-${index}`}>
+                      <SkeletonLoader type="user-card" />
                     </div>
-                    <button 
-                      className="text-custom-text-secondary hover:text-custom-text focus:outline-none focus:ring-2 focus:ring-custom-teal focus:ring-offset-2 rounded p-1"
-                      type="button"
-                      aria-label={`Send message to ${user.name}`}
-                    >
-                      <span className="material-icons" aria-hidden="true">chat_bubble_outline</span>
-                    </button>
-                  </div>
-                ))})
+                  ))
+                ) : (
+                  activeUsers.map((user) => (
+                    <div 
+                      key={user.id} 
+                      className="flex items-center justify-between p-2 rounded-lg hover:bg-custom-bg transition-colors duration-300">
+                      <div className="flex items-center">
+                        <div className="relative">
+                          <div 
+                            className="active-now-avatar bg-gradient-to-br from-custom-teal to-custom-blue shadow-md" 
+                            role="img" 
+                            aria-label={`${user.name} avatar`}
+                          >
+                            <span className="text-white font-bold" aria-hidden="true">{user.initials}</span>
+                          </div>
+                          <span 
+                            className="absolute bottom-0 right-0 h-3 w-3 bg-green-500 border-2 border-white rounded-full" 
+                            aria-label="Online now"
+                          ></span>
+                        </div>
+                        <div className="ml-3">
+                          <p className="font-semibold text-custom-text">{user.name}</p>
+                          <p 
+                            className="text-xs text-custom-text-secondary flex items-center" 
+                            aria-label={`Last seen ${user.lastSeen}`}
+                          >
+                            <span className="material-icons text-xs mr-1">schedule</span>
+                            {user.lastSeen}
+                          </p>
+                        </div>
+                      </div>
+                      <button 
+                        onClick={() => handleMessageUser(user)}
+                        className="text-custom-text-secondary hover:text-custom-teal focus:outline-none focus:ring-2 focus:ring-custom-teal focus:ring-offset-2 rounded-full p-2 transition-all duration-300 hover:bg-custom-teal hover:bg-opacity-10"
+                        type="button"
+                        aria-label={`Send message to ${user.name}`}
+                      >
+                        <span className="material-icons" aria-hidden="true">chat_bubble_outline</span>
+                      </button>
+                    </div>
+                  ))
+                )}
               </div>
             </div>
 
             {/* Upcoming Events Card */}
-            <div className="bg-custom-bg-2 p-6 rounded-lg border border-custom-border upcoming-events-card">
+            <div className="bg-custom-bg-2 p-6 rounded-lg border border-custom-border upcoming-events-card card-hover">
               <div className="flex justify-between items-center mb-4">
                 <h3 className="text-lg font-bold">Your Upcoming Events</h3>
-                <button className="text-sm text-custom-teal hover:underline" type="button">View Calendar</button>
+                <button onClick={handleViewCalendar} className="text-sm text-custom-teal hover:underline" type="button">View Calendar</button>
               </div>
               <div className="space-y-4">
                 {upcomingEvents.map((event) => (
@@ -236,7 +379,7 @@ const HomePage = () => {
         <div className="mt-12 bg-custom-bg-2 p-6 rounded-lg border border-custom-border people-you-may-know">
           <div className="flex justify-between items-center mb-4">
             <h2 className="text-2xl font-bold">People You May Know</h2>
-            <button className="text-sm text-custom-teal hover:underline" type="button">See All</button>
+            <button onClick={handleSeeAllPeople} className="text-sm text-custom-teal hover:underline" type="button">See All</button>
           </div>
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
             {recommendations.map((person) => (
@@ -259,11 +402,17 @@ const HomePage = () => {
                 </div>
                 <p className="text-xs text-gray-500 mb-3">{person.connections}</p>
                 <button 
-                  className="w-full bg-custom-blue text-white py-2 rounded-lg font-semibold hover:bg-blue-600 transition duration-300 focus:outline-none focus:ring-2 focus:ring-custom-blue focus:ring-offset-2"
+                  onClick={() => handleConnect(person)}
+                  className={`w-full py-2 rounded-lg font-semibold focus:outline-none focus:ring-2 focus:ring-offset-2 transition-all duration-300 ${
+                    connectedUsers.includes(person.id)
+                      ? 'bg-gray-300 text-gray-600 cursor-not-allowed'
+                      : 'btn-primary text-white focus:ring-custom-blue hover:scale-105'
+                  }`}
                   type="button"
                   aria-label={`Connect with ${person.name}`}
+                  disabled={connectedUsers.includes(person.id)}
                 >
-                  Connect
+                  {connectedUsers.includes(person.id) ? 'Request Sent' : 'Connect'}
                 </button>
               </div>
             ))}

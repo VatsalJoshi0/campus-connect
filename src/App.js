@@ -19,6 +19,7 @@ import ProfilePage from './pages/ProfilePage';
 import SettingsPage from './pages/SettingsPage';
 import SchedulePage from './pages/SchedulePage';
 import SocialFeedPage from './pages/SocialFeedPage';
+import ErrorPage from './pages/ErrorPage';
 
 const App = () => {
   useEffect(() => {
@@ -50,6 +51,7 @@ const App = () => {
                       <Route path="/settings" element={<SettingsPage />} />
                       <Route path="/schedule" element={<SchedulePage />} />
                       <Route path="/social-feed" element={<SocialFeedPage />} />
+                      <Route path="*" element={<ErrorPage />} />
                     </Routes>
                     <ToastContainer />
                   </div>

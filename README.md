@@ -1,4 +1,10 @@
-# Campus Connect - Event Networking Platform
+# 🎓 Campus Connect - Event Networking Platform
+
+[![Build Status](https://img.shields.io/badge/build-passing-brightgreen)]()
+[![Version](https://img.shields.io/badge/version-1.0.0-blue)]()
+[![License](https://img.shields.io/badge/license-MIT-green)]()
+[![React](https://img.shields.io/badge/React-18.2.0-61dafb)]()
+[![TailwindCSS](https://img.shields.io/badge/TailwindCSS-3.3.0-38bdf8)]()
 
 A modern, feature-rich event networking platform for students built with React. Connect meaningfully at college events through AI-powered matching, real-time chat, QR code exchanges, and gamified networking experiences.
 

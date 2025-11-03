@@ -1,0 +1,30 @@
+{
+  "events": [
+    {
+      "id": 1,
+      "title": "Tech Conference 2025",
+      "date": "2025-12-15T09:00:00",
+      "location": "Convention Center",
+      "description": "The biggest tech conference of the year. Join us for a day of learning and networking.",
+      "image": "https://via.placeholder.com/400x200.png?text=Tech+Conference+2025"
+    },
+    {
+      "id": 2,
+      "title": "Design Summit",
+      "date": "2025-11-20T10:00:00",
+      "location": "Online",
+      "description": "A virtual summit for designers from around the world. Learn from the best in the industry.",
+      "image": "https://via.placeholder.com/400x200.png?text=Design+Summit"
+    },
+    {
+      "id": 3,
+      "title": "Startup Pitch Night",
+      "date": "2025-11-28T18:00:00",
+      "location": "Innovation Hub",
+      "description": "Watch the next generation of entrepreneurs pitch their ideas to a panel of investors.",
+      "image": "https://via.placeholder.com/400x200.png?text=Startup+Pitch+Night"
+    }
+  ],
+  "users": [],
+  "messages": []
+}

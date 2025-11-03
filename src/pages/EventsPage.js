@@ -1,9 +1,11 @@
 import React, { useState, useMemo } from 'react';
+import { useNavigate } from 'react-router-dom';
 import Header from '../components/Header';
 import Footer from '../components/Footer';
 import EventCard from '../components/EventCard';
 
 const EventsPage = () => {
+  const navigate = useNavigate();
   const [activeFilter, setActiveFilter] = useState('All Events');
   const [searchQuery, setSearchQuery] = useState('');
   const [sortBy, setSortBy] = useState('date');
@@ -135,11 +137,20 @@ const EventsPage = () => {
       <Header />
       
       <main className="container mx-auto px-4 lg:px-8 py-8">
-        <div className="mb-8">
-          <h1 className="text-4xl font-bold text-custom-text mb-2">Campus Events</h1>
-          <p className="text-custom-text-secondary">
-            Discover and join exciting events happening on campus
-          </p>
+        <div className="mb-8 flex justify-between items-center">
+          <div>
+            <h1 className="text-4xl font-bold text-custom-text mb-2">Campus Events</h1>
+            <p className="text-custom-text-secondary">
+              Discover and join exciting events happening on campus
+            </p>
+          </div>
+          <button
+            onClick={() => navigate('/schedule')}
+            className="flex items-center space-x-2 bg-custom-teal text-black px-6 py-3 rounded-lg font-semibold hover:bg-opacity-90 transition-all duration-300 transform hover:scale-105 focus:outline-none focus:ring-2 focus:ring-custom-teal focus:ring-offset-2"
+          >
+            <span className="material-icons">calendar_today</span>
+            <span>My Schedule</span>
+          </button>
         </div>
 
         <div className="mb-8 space-y-4">
@@ -161,10 +172,10 @@ const EventsPage = () => {
               {filters.map((filter) => (
                 <button
                   key={filter}
-                  className={`px-4 py-2 rounded-full text-sm font-medium transition-colors ${
+                  className={`px-4 py-2 rounded-full text-sm font-medium filter-pill ${
                     activeFilter === filter
-                      ? 'bg-custom-teal text-black'
-                      : 'bg-custom-bg-2 text-custom-text-secondary hover:text-custom-text border border-custom-border'
+                      ? 'bg-custom-teal text-black shadow-lg'
+                      : 'bg-custom-bg-2 text-custom-text-secondary hover:text-custom-text border border-custom-border hover:border-custom-teal'
                   }`}
                   onClick={() => setActiveFilter(filter)}
                 >
@@ -213,20 +224,23 @@ const EventsPage = () => {
         )}
 
         <div className="mt-12 grid grid-cols-1 md:grid-cols-3 gap-6">
-          <div className="bg-custom-bg-2 p-6 rounded-lg border border-custom-border text-center">
-            <div className="text-3xl font-bold text-custom-teal mb-2">{events.length}</div>
+          <div className="bg-custom-bg-2 p-6 rounded-lg border border-custom-border text-center card-hover">
+            <span className="material-icons text-4xl text-custom-teal mb-2">event</span>
+            <div className="text-3xl font-bold text-custom-text mb-2">{events.length}</div>
             <div className="text-custom-text-secondary">Total Events</div>
           </div>
           
-          <div className="bg-custom-bg-2 p-6 rounded-lg border border-custom-border text-center">
-            <div className="text-3xl font-bold text-custom-teal mb-2">
+          <div className="bg-custom-bg-2 p-6 rounded-lg border border-custom-border text-center card-hover">
+            <span className="material-icons text-4xl text-custom-blue mb-2">groups</span>
+            <div className="text-3xl font-bold text-custom-text mb-2">
               {events.reduce((sum, event) => sum + event.attendees, 0)}
             </div>
             <div className="text-custom-text-secondary">Total Attendees</div>
           </div>
           
-          <div className="bg-custom-bg-2 p-6 rounded-lg border border-custom-border text-center">
-            <div className="text-3xl font-bold text-custom-teal mb-2">
+          <div className="bg-custom-bg-2 p-6 rounded-lg border border-custom-border text-center card-hover">
+            <span className="material-icons text-4xl text-custom-orange mb-2">business</span>
+            <div className="text-3xl font-bold text-custom-text mb-2">
               {new Set(events.map(event => event.organizer)).size}
             </div>
             <div className="text-custom-text-secondary">Organizers</div>

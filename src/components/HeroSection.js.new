@@ -1,0 +1,204 @@
+import React, { useState, useEffect, useMemo, useCallback } from 'react';
+import { useNavigate } from 'react-router-dom';
+import { useAuth } from '../contexts/AuthContext';
+import { useNotification } from '../contexts/NotificationContext';
+
+const HERO_BACKGROUNDS = [
+  {
+    bg: 'url("https://images.unsplash.com/photo-1540575467063-178a50c2df87?q=80&w=2070&auto=format&fit=crop")',
+    text: 'Spring Innovation Summit 2025',
+    description: 'Join the biggest innovation summit of the year. Connect with industry leaders and showcase your ideas.'
+  },
+  {
+    bg: 'url("https://images.unsplash.com/photo-1511578314322-379afb476865?q=80&w=2070&auto=format&fit=crop")',
+    text: 'Tech Leaders Meetup 2025',
+    description: 'Network with tech industry pioneers and learn about emerging technologies shaping our future.'
+  },
+  {
+    bg: 'url("https://images.unsplash.com/photo-1522202176988-66273c2fd55f?q=80&w=2071&auto=format&fit=crop")',
+    text: 'Campus Creators Expo 2025',
+    description: 'Showcase your creativity at our annual expo. Meet fellow creators and industry professionals.'
+  },
+  {
+    bg: 'url("https://images.unsplash.com/photo-1559136555-9303baea8ebd?q=80&w=2070&auto=format&fit=crop")',
+    text: 'Future Innovators Forum',
+    description: 'Be part of the next generation of innovators. Share ideas, build solutions, create impact.'
+  },
+  {
+    bg: 'url("https://images.unsplash.com/photo-1523580494863-6f3031224c94?q=80&w=2070&auto=format&fit=crop")',
+    text: 'Student Networking Gala',
+    description: 'Connect with peers and professionals in a vibrant atmosphere. Build lasting relationships.'
+  }
+];
+
+const FADE_DURATION = 2000; // 2 seconds for fade effect
+const CAROUSEL_INTERVAL = 8000; // 8 seconds between transitions
+
+const HeroSection = () => {
+  const navigate = useNavigate();
+  const { isAuthenticated } = useAuth();
+  const { showSuccess, showInfo } = useNotification();
+  const [currentIndex, setCurrentIndex] = useState(0);
+  const [nextIndex, setNextIndex] = useState(null);
+  const [transitioning, setTransitioning] = useState(false);
+  const [contentFade, setContentFade] = useState(false);
+
+  const currentHero = useMemo(() => 
+    HERO_BACKGROUNDS[currentIndex], 
+    [currentIndex]
+  );
+
+  const nextHero = useMemo(() => 
+    nextIndex !== null ? HERO_BACKGROUNDS[nextIndex] : null, 
+    [nextIndex]
+  );
+
+  const startTransition = useCallback(() => {
+    if (!transitioning) {
+      setTransitioning(true);
+      setContentFade(true);
+      setNextIndex((currentIndex + 1) % HERO_BACKGROUNDS.length);
+
+      setTimeout(() => {
+        setCurrentIndex((currentIndex + 1) % HERO_BACKGROUNDS.length);
+        setContentFade(false);
+        setTimeout(() => {
+          setTransitioning(false);
+          setNextIndex(null);
+        }, 2000);
+      }, 2000);
+    }
+  }, [currentIndex, transitioning]);
+
+  const handleRegisterClick = useCallback(() => {
+    if (isAuthenticated) {
+      showSuccess('🎉 You\'re already registered! Welcome to Campus Connect!', {
+        duration: 3000
+      });
+    } else {
+      showInfo('Redirecting to registration...', { duration: 2000 });
+      setTimeout(() => {
+        navigate('/register');
+      }, 1000);
+    }
+  }, [isAuthenticated, navigate, showSuccess, showInfo]);
+
+  const handleLearnMoreClick = useCallback(() => {
+    showInfo('Exploring events...', { duration: 2000 });
+    setTimeout(() => {
+      navigate('/events');
+    }, 1000);
+  }, [navigate, showInfo]);
+
+  useEffect(() => {
+    const interval = setInterval(startTransition, CAROUSEL_INTERVAL);
+    return () => clearInterval(interval);
+  }, [startTransition]);
+
+  return (
+    <section
+      className="hero-section rounded-lg text-white relative z-10 overflow-hidden min-h-[600px]"
+      aria-label="Featured Event"
+    >
+      {/* Current slide */}
+      <div className={`hero-slide ${!transitioning ? 'active' : 'inactive'}`}>
+        <div 
+          className="hero-background"
+          style={{ backgroundImage: currentHero.bg }}
+          aria-hidden="true"
+        />
+        <div className="hero-content">
+          <span 
+            className="inline-block bg-custom-teal text-black font-semibold px-4 py-1.5 rounded-full mb-4 transform transition-all duration-300 hover:scale-105 hover:shadow-lg backdrop-blur-sm"
+          >
+            Featured Event
+          </span>
+          
+          <h1 className="text-5xl lg:text-7xl font-bold mb-6 text-white leading-tight">
+            {currentHero.text}
+          </h1>
+          
+          <p className="text-xl lg:text-2xl mb-8 text-white max-w-2xl font-medium">
+            {currentHero.description}
+          </p>
+          
+          <div className="flex flex-col sm:flex-row gap-4 sm:gap-6">
+            <button 
+              type="button"
+              className="hero-register-button group relative overflow-hidden"
+              onClick={handleRegisterClick}
+            >
+              <span className="relative z-10">Register Now</span>
+              <span className="absolute inset-0 w-full h-full bg-white/20 transform scale-x-0 transition-transform group-hover:scale-x-100"></span>
+            </button>
+            
+            <button 
+              type="button"
+              className="hero-learn-more-button group overflow-hidden"
+              onClick={handleLearnMoreClick}
+            >
+              <span className="relative z-10 flex items-center">
+                Learn More
+                <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5 ml-2 transform transition-transform group-hover:translate-x-1" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M14 5l7 7m0 0l-7 7m7-7H3" />
+                </svg>
+              </span>
+            </button>
+          </div>
+        </div>
+      </div>
+      
+      {/* Next slide */}
+      {nextHero && (
+        <div className={`hero-slide ${transitioning ? 'active' : 'inactive'}`}>
+          <div 
+            className="hero-background"
+            style={{ backgroundImage: nextHero.bg }}
+            aria-hidden="true"
+          />
+          <div className="hero-content">
+            <span 
+              className="inline-block bg-custom-teal text-black font-semibold px-4 py-1.5 rounded-full mb-4 transform transition-all duration-300 hover:scale-105 hover:shadow-lg backdrop-blur-sm"
+            >
+              Featured Event
+            </span>
+            
+            <h1 className="text-5xl lg:text-7xl font-bold mb-6 text-white leading-tight">
+              {nextHero.text}
+            </h1>
+            
+            <p className="text-xl lg:text-2xl mb-8 text-white max-w-2xl font-medium">
+              {nextHero.description}
+            </p>
+            
+            <div className="flex flex-col sm:flex-row gap-4 sm:gap-6">
+              <button 
+                type="button"
+                className="hero-register-button group relative overflow-hidden"
+                onClick={handleRegisterClick}
+              >
+                <span className="relative z-10">Register Now</span>
+                <span className="absolute inset-0 w-full h-full bg-white/20 transform scale-x-0 transition-transform group-hover:scale-x-100"></span>
+              </button>
+              
+              <button 
+                type="button"
+                className="hero-learn-more-button group overflow-hidden"
+                onClick={handleLearnMoreClick}
+              >
+                <span className="relative z-10 flex items-center">
+                  Learn More
+                  <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5 ml-2 transform transition-transform group-hover:translate-x-1" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M14 5l7 7m0 0l-7 7m7-7H3" />
+                  </svg>
+                </span>
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
+    </section>
+  );
+};
+
+export default HeroSection;

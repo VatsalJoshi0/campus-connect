@@ -4,6 +4,7 @@ import Footer from '../components/Footer';
 import { useAuth } from '../contexts/AuthContext';
 import { useNotification } from '../contexts/NotificationContext';
 import UserAvatar from '../components/UserAvatar';
+import ProfileHeader from '../components/ProfileHeader';
 
 const ProfilePage = () => {
   const { user, updateUser } = useAuth();
@@ -168,150 +169,40 @@ const ProfilePage = () => {
       
       <main className="container mx-auto px-4 lg:px-8 py-8">
         {/* Profile Header */}
-        <div className="bg-custom-bg-2 rounded-lg border border-custom-border p-8 mb-8">
-          <div className="flex flex-col md:flex-row items-start md:items-center space-y-4 md:space-y-0 md:space-x-6">
-            {/* Avatar */}
-            <div className="relative">
-              <UserAvatar 
-                user={user} 
-                size="2xl" 
-                className="shadow-xl"
-              />
-              {isEditing && (
-                <>
-                  <input
-                    type="file"
-                    accept="image/*"
-                    ref={fileInputRef}
-                    onChange={async (e) => {
-                      const file = e.target.files?.[0];
-                      if (!file) return;
-                      const reader = new FileReader();
-                      reader.onload = () => {
-                        const dataUrl = reader.result;
-                        updateUser({ profileImage: dataUrl });
-                        showSuccess('Profile photo updated', { duration: 2500 });
-                      };
-                      reader.readAsDataURL(file);
-                      // clear the input value so same file can be re-selected later
-                      e.target.value = '';
-                    }}
-                    className="hidden"
-                  />
-
-                  <button
-                    onClick={() => fileInputRef.current?.click()}
-                    className="absolute bottom-0 right-0 bg-custom-teal text-black p-2 rounded-full hover:bg-opacity-80 transition duration-300 shadow-lg"
-                    aria-label="Upload profile photo"
-                  >
-                    <span className="material-icons">camera_alt</span>
-                  </button>
-                </>
-              )}
-            </div>
-
-            {/* Basic Info */}
-            <div className="flex-1">
-              {isEditing ? (
-                <div className="space-y-4">
-                  <input
-                    type="text"
-                    value={formData.name}
-                    onChange={(e) => handleInputChange('name', e.target.value)}
-                    className="text-3xl font-bold bg-transparent border-b-2 border-custom-border focus:border-custom-teal outline-none text-custom-text"
-                  />
-                  <textarea
-                    value={formData.bio}
-                    onChange={(e) => handleInputChange('bio', e.target.value)}
-                    rows="3"
-                    className="w-full p-3 bg-input border border-custom-border rounded-lg text-custom-text focus:outline-none focus:ring-2 focus:ring-custom-teal"
-                    placeholder="Tell us about yourself..."
-                  />
-                  <div className="grid grid-cols-1 md:grid-cols-3 gap-3">
-                    <div>
-                      <label className="text-sm text-custom-text-secondary">Field of Study</label>
-                      <input
-                        type="text"
-                        value={formData.field}
-                        onChange={(e) => handleInputChange('field', e.target.value)}
-                        className="w-full px-3 py-2 bg-input border border-custom-border rounded-lg text-custom-text focus:outline-none focus:ring-2 focus:ring-custom-teal mt-1"
-                      />
-                    </div>
-                    <div>
-                      <label className="text-sm text-custom-text-secondary">Year</label>
-                      <input
-                        type="text"
-                        value={formData.year}
-                        onChange={(e) => handleInputChange('year', e.target.value)}
-                        className="w-full px-3 py-2 bg-input border border-custom-border rounded-lg text-custom-text focus:outline-none focus:ring-2 focus:ring-custom-teal mt-1"
-                      />
-                    </div>
-                    <div>
-                      <label className="text-sm text-custom-text-secondary">Institute</label>
-                      <input
-                        type="text"
-                        value={formData.institute}
-                        onChange={(e) => handleInputChange('institute', e.target.value)}
-                        className="w-full px-3 py-2 bg-input border border-custom-border rounded-lg text-custom-text focus:outline-none focus:ring-2 focus:ring-custom-teal mt-1"
-                      />
-                    </div>
-                  </div>
-                </div>
-              ) : (
-                <div>
-                  <h1 className="text-3xl font-bold text-custom-text mb-2">{user?.name}</h1>
-                  <p className="text-custom-text-secondary mb-2">
-                    {formData.field}, {formData.year}  {formData.institute}
-                  </p>
-                  <p className="text-custom-text">{formData.bio}</p>
-                </div>
-              )}
-
-              {/* Stats */}
-              <div className="flex items-center space-x-6 mt-4">
-                <div className="text-center">
-                  <div className="text-2xl font-bold text-custom-teal">{user?.connections || 0}</div>
-                  <div className="text-sm text-custom-text-secondary">Connections</div>
-                </div>
-                <div className="text-center">
-                  <div className="text-2xl font-bold text-custom-teal">{user?.points || 0}</div>
-                  <div className="text-sm text-custom-text-secondary">Points</div>
-                </div>
-                <div className="text-center">
-                  <div className="text-2xl font-bold text-custom-teal">{calculateProfileCompletion()}%</div>
-                  <div className="text-sm text-custom-text-secondary">Complete</div>
-                </div>
-              </div>
-            </div>
-
-            {/* Actions */}
-            <div className="flex space-x-3">
-              {isEditing ? (
-                <>
-                  <button
-                    onClick={handleSave}
-                    className="bg-custom-teal text-black px-6 py-2 rounded-lg hover:bg-opacity-80 transition duration-300"
-                  >
-                    Save Changes
-                  </button>
-                  <button
-                    onClick={() => setIsEditing(false)}
-                    className="bg-custom-bg border border-custom-border text-custom-text px-6 py-2 rounded-lg hover:bg-custom-bg-2 transition duration-300"
-                  >
-                    Cancel
-                  </button>
-                </>
-              ) : (
-                <button
-                  onClick={() => setIsEditing(true)}
-                  className="bg-custom-blue text-white px-6 py-2 rounded-lg hover:bg-blue-600 transition duration-300 flex items-center space-x-2"
-                >
-                  <span className="material-icons text-sm">edit</span>
-                  <span>Edit Profile</span>
-                </button>
-              )}
-            </div>
-          </div>
+        <div className="mb-8">
+          <ProfileHeader
+            user={{
+              ...user,
+              name: formData.name,
+              bio: formData.bio,
+              field: formData.field,
+              year: formData.year,
+              institute: formData.institute,
+              initials: formData.name?.split(' ').map(n => n[0]).join('').toUpperCase() || 'U'
+            }}
+            isEditing={isEditing}
+            onEditClick={() => setIsEditing(true)}
+            onSave={handleSave}
+            onCancel={() => setIsEditing(false)}
+            onImageChange={async (e) => {
+              const file = e.target.files?.[0];
+              if (!file) return;
+              const reader = new FileReader();
+              reader.onload = () => {
+                const dataUrl = reader.result;
+                updateUser({ profileImage: dataUrl });
+                showSuccess('Profile photo updated', { duration: 2500 });
+              };
+              reader.readAsDataURL(file);
+              // clear the input value so same file can be re-selected later
+              e.target.value = '';
+            }}
+            stats={{
+              connections: user?.connections || 0,
+              points: user?.points || 0,
+              completion: calculateProfileCompletion()
+            }}
+          />
         </div>
 
         {/* Tabs */}

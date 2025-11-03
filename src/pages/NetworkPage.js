@@ -27,7 +27,7 @@ const NetworkPage = () => {
   };
 
   const MatchCard = ({ person, isConnection = false }) => (
-    <div className="bg-custom-bg-2 p-6 rounded-lg border border-custom-border hover:shadow-lg transition-all duration-300">
+    <div className="bg-custom-bg-2 p-6 rounded-lg border border-custom-border card-hover">
       <div className="flex items-start space-x-4">
         {/* Avatar */}
         <div className="w-16 h-16 rounded-full bg-gradient-to-r from-custom-blue to-custom-teal flex items-center justify-center text-white font-bold text-xl">
@@ -69,7 +69,7 @@ const NetworkPage = () => {
           <div className="flex items-center space-x-3 mt-4">
             {isConnection ? (
               <>
-                <button className="flex items-center space-x-2 bg-custom-teal text-black px-4 py-2 rounded-lg hover:bg-opacity-80 transition duration-300">
+                <button className="flex items-center space-x-2 btn-primary text-white px-4 py-2 rounded-lg font-semibold">
                   <span className="material-icons text-sm">chat</span>
                   <span>Message</span>
                 </button>
@@ -82,7 +82,7 @@ const NetworkPage = () => {
               <>
                 <button
                   onClick={() => handleConnect(person)}
-                  className="flex items-center space-x-2 bg-custom-blue text-white px-4 py-2 rounded-lg hover:bg-blue-600 transition duration-300"
+                  className="flex items-center space-x-2 btn-primary text-white px-4 py-2 rounded-lg font-semibold"
                 >
                   <span className="material-icons text-sm">person_add</span>
                   <span>Connect</span>
@@ -213,7 +213,7 @@ const NetworkPage = () => {
                 </span>
                 <button 
                   onClick={() => setShowQRScanner(true)}
-                  className="flex items-center space-x-2 bg-custom-blue text-white px-4 py-2 rounded-lg hover:bg-blue-600 transition duration-300"
+                  className="flex items-center space-x-2 btn-primary text-white px-4 py-2 rounded-lg font-semibold"
                 >
                   <span className="material-icons text-sm">qr_code_scanner</span>
                   <span>QR Connect</span>

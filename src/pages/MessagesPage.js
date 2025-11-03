@@ -1,16 +1,32 @@
-import React, { useState, useRef, useEffect } from 'react';
+import React, { useState, useRef, useEffect, useMemo, useCallback } from 'react';
 import Header from '../components/Header';
+import MessageBubble from '../components/MessageBubble';
+import ChatList from '../components/ChatList';
 import { useAuth } from '../contexts/AuthContext';
 import { useNetworking } from '../contexts/NetworkingContext';
+import { useChat } from '../hooks/useChat';
 import { sanitizeChatMessage } from '../utils/sanitize';
 
 const MessagesPage = () => {
   const { user } = useAuth();
-  const { connections, sendMessage } = useNetworking();
+  const { connections } = useNetworking();
   const [activeChat, setActiveChat] = useState(null);
   const [newMessage, setNewMessage] = useState('');
   const [activeTab, setActiveTab] = useState('direct');
   const messagesEndRef = useRef(null);
+  const chatInputRef = useRef(null);
+  const [isSearching, setIsSearching] = useState(false);
+  const [searchQuery, setSearchQuery] = useState('');
+
+  const {
+    messages,
+    isTyping,
+    sendChatMessage,
+    handleTypingStart,
+    loadChatHistory,
+    retryMessage,
+    markAsRead
+  } = useChat();
 
   // Mock group forums
   const [groupForums] = useState([
@@ -66,40 +82,15 @@ const MessagesPage = () => {
     messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' });
   };
 
-  const handleSendMessage = (e) => {
+  const handleSendMessage = async (e) => {
     e.preventDefault();
     if (!newMessage.trim() || !activeChat) return;
 
-    // Sanitize message to prevent XSS
-    const sanitizedMessage = sanitizeChatMessage(newMessage);
-    
-    if (!sanitizedMessage) {
-      console.warn('Message blocked: potentially malicious content');
-      return;
+    const success = await sendChatMessage(activeChat, newMessage);
+    if (success) {
+      setNewMessage('');
+      chatInputRef.current?.focus();
     }
-
-    // Get existing messages to determine sequence
-    const existingMessages = chatMessages[activeChat] || [];
-    const lastSequence = existingMessages.length > 0 
-      ? Math.max(...existingMessages.map(m => m.sequence || 0))
-      : 0;
-
-    const message = {
-      id: Date.now(),
-      senderId: user?.id,
-      message: sanitizedMessage,
-      timestamp: new Date(),
-      sequence: lastSequence + 1,
-      sent: true
-    };
-
-    setChatMessages(prev => ({
-      ...prev,
-      [activeChat]: [...(prev[activeChat] || []), message]
-    }));
-
-    sendMessage(activeChat, sanitizedMessage);
-    setNewMessage('');
   };
 
   const formatTime = (timestamp) => {
@@ -196,8 +187,43 @@ const MessagesPage = () => {
           {/* Sidebar */}
           <aside className="w-1/3 border-r border-custom-border flex flex-col" aria-label="Message list">
             {/* Header */}
-            <div className="p-4 border-b border-custom-border">
-              <h1 className="text-xl font-bold text-custom-text mb-4">Messages</h1>
+            <div className="p-4 border-b border-custom-border space-y-4">
+              <div className="flex items-center justify-between">
+                <h1 className="text-xl font-bold text-custom-text">Messages</h1>
+                <button
+                  type="button"
+                  className="p-2 text-custom-text-secondary hover:text-custom-text hover:bg-custom-bg rounded-lg transition-colors focus:outline-none focus:ring-2 focus:ring-custom-teal focus:ring-offset-2"
+                  aria-label="Start new conversation"
+                >
+                  <span className="material-icons">edit</span>
+                </button>
+              </div>
+
+              {/* Search */}
+              <div className="relative">
+                <input
+                  type="text"
+                  placeholder="Search messages..."
+                  value={searchQuery}
+                  onChange={(e) => setSearchQuery(e.target.value)}
+                  className="w-full pl-10 pr-4 py-2 bg-custom-bg border border-custom-border rounded-lg text-custom-text placeholder-custom-text-secondary focus:outline-none focus:ring-2 focus:ring-custom-teal"
+                  onFocus={() => setIsSearching(true)}
+                  onBlur={() => setTimeout(() => setIsSearching(false), 200)}
+                />
+                <span className="absolute left-3 top-1/2 -translate-y-1/2 text-custom-text-secondary">
+                  <span className="material-icons text-sm">search</span>
+                </span>
+                {searchQuery && (
+                  <button
+                    type="button"
+                    className="absolute right-3 top-1/2 -translate-y-1/2 text-custom-text-secondary hover:text-custom-text"
+                    onClick={() => setSearchQuery('')}
+                    aria-label="Clear search"
+                  >
+                    <span className="material-icons text-sm">close</span>
+                  </button>
+                )}
+              </div>
               
               {/* Tabs */}
               <div className="flex space-x-1 bg-custom-bg p-1 rounded-lg" role="tablist" aria-label="Message categories">
@@ -252,33 +278,89 @@ const MessagesPage = () => {
             {activeChat ? (
               <>
                 {/* Chat Header */}
-                <header className="p-4 border-b border-custom-border">
-                  <div className="flex items-center space-x-3">
-                    <div 
-                      className="w-10 h-10 rounded-full bg-gradient-to-r from-custom-blue to-custom-teal flex items-center justify-center text-white font-bold"
-                      role="img"
-                      aria-label={`${activeTab === 'direct' 
-                        ? connections.find(c => c.id === activeChat)?.name
-                        : groupForums.find(g => g.id === activeChat)?.name} avatar`}
-                    >
-                      {activeTab === 'direct' 
-                        ? connections.find(c => c.id === activeChat)?.initials
-                        : groupForums.find(g => g.id === activeChat)?.avatar
-                      }
+                <header className="p-4 border-b border-custom-border bg-custom-bg-2">
+                  <div className="flex items-center justify-between">
+                    <div className="flex items-center space-x-3">
+                      <div className="relative">
+                        <div 
+                          className="w-10 h-10 rounded-full bg-gradient-to-r from-custom-blue to-custom-teal flex items-center justify-center text-white font-bold ring-2 ring-custom-teal ring-offset-2 ring-offset-custom-bg-2"
+                          role="img"
+                          aria-label={`${activeTab === 'direct' 
+                            ? connections.find(c => c.id === activeChat)?.name
+                            : groupForums.find(g => g.id === activeChat)?.name} avatar`}
+                        >
+                          {activeTab === 'direct' 
+                            ? connections.find(c => c.id === activeChat)?.initials
+                            : groupForums.find(g => g.id === activeChat)?.avatar
+                          }
+                        </div>
+                        {activeTab === 'direct' && (
+                          <span 
+                            className="absolute bottom-0 right-0 h-3 w-3 bg-green-500 border-2 border-white rounded-full"
+                            aria-label="Online"
+                          ></span>
+                        )}
+                      </div>
+                      <div>
+                        <h2 className="font-semibold text-custom-text flex items-center space-x-2">
+                          <span>
+                            {activeTab === 'direct' 
+                              ? connections.find(c => c.id === activeChat)?.name
+                              : groupForums.find(g => g.id === activeChat)?.name
+                            }
+                          </span>
+                          {activeTab === 'group' && (
+                            <span className="bg-custom-teal text-black text-xs px-2 py-1 rounded-full">
+                              Group
+                            </span>
+                          )}
+                        </h2>
+                        <p className="text-sm text-custom-text-secondary flex items-center space-x-2">
+                          {activeTab === 'direct' ? (
+                            <>
+                              <span className="flex items-center">
+                                <span className="h-2 w-2 bg-green-500 rounded-full mr-2"></span>
+                                <span aria-label="User is online">Online</span>
+                              </span>
+                              <span>•</span>
+                              <span>Last active 2m ago</span>
+                            </>
+                          ) : (
+                            <>
+                              <span className="flex items-center">
+                                <span className="material-icons text-sm mr-1">group</span>
+                                <span>{groupForums.find(g => g.id === activeChat)?.members} members</span>
+                              </span>
+                              <span>•</span>
+                              <span>3 online</span>
+                            </>
+                          )}
+                        </p>
+                      </div>
                     </div>
-                    <div>
-                      <h2 className="font-semibold text-custom-text">
-                        {activeTab === 'direct' 
-                          ? connections.find(c => c.id === activeChat)?.name
-                          : groupForums.find(g => g.id === activeChat)?.name
-                        }
-                      </h2>
-                      <p className="text-sm text-custom-text-secondary">
-                        {activeTab === 'direct' 
-                          ? <span aria-label="User is online">Online</span>
-                          : `${groupForums.find(g => g.id === activeChat)?.members} members`
-                        }
-                      </p>
+                    
+                    <div className="flex items-center space-x-2">
+                      <button
+                        type="button"
+                        className="p-2 text-custom-text-secondary hover:text-custom-text hover:bg-custom-bg rounded-lg transition-colors focus:outline-none focus:ring-2 focus:ring-custom-teal focus:ring-offset-2"
+                        aria-label="Start video call"
+                      >
+                        <span className="material-icons">videocam</span>
+                      </button>
+                      <button
+                        type="button"
+                        className="p-2 text-custom-text-secondary hover:text-custom-text hover:bg-custom-bg rounded-lg transition-colors focus:outline-none focus:ring-2 focus:ring-custom-teal focus:ring-offset-2"
+                        aria-label="Start voice call"
+                      >
+                        <span className="material-icons">call</span>
+                      </button>
+                      <button
+                        type="button"
+                        className="p-2 text-custom-text-secondary hover:text-custom-text hover:bg-custom-bg rounded-lg transition-colors focus:outline-none focus:ring-2 focus:ring-custom-teal focus:ring-offset-2"
+                        aria-label="View chat information"
+                      >
+                        <span className="material-icons">info</span>
+                      </button>
                     </div>
                   </div>
                 </header>
@@ -303,34 +385,71 @@ const MessagesPage = () => {
 
                 {/* Message Input */}
                 <footer className="p-4 border-t border-custom-border">
-                  <form onSubmit={handleSendMessage} className="flex space-x-3" aria-label="Send message">
-                    <label htmlFor="message-input" className="sr-only">
-                      Type your message
-                    </label>
-                    <input
-                      id="message-input"
-                      type="text"
-                      value={newMessage}
-                      onChange={(e) => setNewMessage(e.target.value)}
-                      placeholder="Type a message..."
-                      maxLength="1000"
-                      className="flex-1 px-4 py-2 bg-custom-bg border border-custom-border rounded-lg text-custom-text focus:outline-none focus:ring-2 focus:ring-custom-teal"
-                      aria-describedby="message-limit"
-                      autoComplete="off"
-                    />
-                    <span id="message-limit" className="sr-only">
-                      Maximum 1000 characters
-                    </span>
-                    <button
-                      type="submit"
-                      disabled={!newMessage.trim()}
-                      className="bg-custom-teal text-black px-6 py-2 rounded-lg hover:bg-opacity-80 transition duration-300 flex items-center space-x-2 disabled:opacity-50 disabled:cursor-not-allowed focus:outline-none focus:ring-2 focus:ring-custom-teal focus:ring-offset-2"
-                      aria-label="Send message"
-                    >
-                      <span className="material-icons text-sm" aria-hidden="true">send</span>
-                      <span>Send</span>
-                    </button>
+                  <form onSubmit={handleSendMessage} className="space-y-4" aria-label="Send message">
+                    <div className="flex space-x-3">
+                      <div className="flex-1 relative">
+                        <label htmlFor="message-input" className="sr-only">
+                          Type your message
+                        </label>
+                        <textarea
+                          id="message-input"
+                          ref={chatInputRef}
+                          value={newMessage}
+                          onChange={(e) => {
+                            setNewMessage(e.target.value);
+                            handleTypingStart(activeChat);
+                          }}
+                          onKeyDown={(e) => {
+                            if (e.key === 'Enter' && !e.shiftKey) {
+                              e.preventDefault();
+                              handleSendMessage(e);
+                            }
+                          }}
+                          placeholder="Type a message... (Press Enter to send, Shift+Enter for new line)"
+                          maxLength="1000"
+                          rows={1}
+                          className="w-full px-4 py-3 bg-custom-bg border border-custom-border rounded-lg text-custom-text focus:outline-none focus:ring-2 focus:ring-custom-teal resize-none"
+                          style={{ minHeight: '2.5rem', maxHeight: '8rem' }}
+                          aria-describedby="message-limit"
+                          autoComplete="off"
+                        />
+                        <div className="absolute bottom-2 right-2 flex items-center space-x-2 text-custom-text-secondary text-xs">
+                          <span>{newMessage.length}/1000</span>
+                        </div>
+                      </div>
+                      <div className="flex items-end space-x-2">
+                        <button
+                          type="button"
+                          className="p-2 text-custom-text-secondary hover:text-custom-text focus:outline-none focus:ring-2 focus:ring-custom-teal focus:ring-offset-2 rounded-lg"
+                          aria-label="Attach file"
+                        >
+                          <span className="material-icons">attach_file</span>
+                        </button>
+                        <button
+                          type="button"
+                          className="p-2 text-custom-text-secondary hover:text-custom-text focus:outline-none focus:ring-2 focus:ring-custom-teal focus:ring-offset-2 rounded-lg"
+                          aria-label="Add emoji"
+                        >
+                          <span className="material-icons">mood</span>
+                        </button>
+                        <button
+                          type="submit"
+                          disabled={!newMessage.trim()}
+                          className="bg-custom-teal text-black px-6 py-2 rounded-lg hover:bg-opacity-80 transition-all duration-300 flex items-center space-x-2 disabled:opacity-50 disabled:cursor-not-allowed focus:outline-none focus:ring-2 focus:ring-custom-teal focus:ring-offset-2 transform hover:scale-105"
+                          aria-label="Send message"
+                        >
+                          <span className="material-icons text-sm" aria-hidden="true">send</span>
+                          <span>Send</span>
+                        </button>
+                      </div>
+                    </div>
                   </form>
+                  {isTyping[activeChat] && (
+                    <div className="text-xs text-custom-text-secondary mt-1 flex items-center">
+                      <span className="material-icons text-sm mr-1">edit</span>
+                      Someone is typing...
+                    </div>
+                  )}
                 </footer>
               </>
             ) : (

@@ -6,6 +6,7 @@ import ThemeToggle from './ThemeToggle';
 import NotificationDropdown from './NotificationDropdown';
 import UserAvatar from './UserAvatar';
 import SearchSuggestions from './SearchSuggestions';
+import MobileMenu from './MobileMenu';
 
 const Header = () => {
   const location = useLocation();
@@ -14,6 +15,7 @@ const Header = () => {
   const [showNotifications, setShowNotifications] = useState(false);
   const [searchQuery, setSearchQuery] = useState('');
   const [showSearchSuggestions, setShowSearchSuggestions] = useState(false);
+  const [showMobileMenu, setShowMobileMenu] = useState(false);
   const searchRef = useRef(null);
 
   const unreadCount = notifications?.filter(n => !n.read).length || 0;
@@ -80,7 +82,11 @@ const Header = () => {
             </nav>
 
             {/* Mobile Navigation Toggle */}
-            <button className="lg:hidden text-custom-text">
+            <button 
+              className="lg:hidden text-custom-text p-2 hover:bg-custom-bg rounded-lg transition-colors"
+              onClick={() => setShowMobileMenu(true)}
+              aria-label="Open mobile menu"
+            >
               <span className="material-icons">menu</span>
             </button>
           </div>
@@ -163,6 +169,12 @@ const Header = () => {
           </div>
         </div>
       </div>
+      
+      {/* Mobile Menu */}
+      <MobileMenu 
+        isOpen={showMobileMenu} 
+        onClose={() => setShowMobileMenu(false)} 
+      />
     </header>
   );
 };

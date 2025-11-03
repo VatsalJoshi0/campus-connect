@@ -33,7 +33,7 @@ const EventCard = ({ event }) => {
 
   return (
     <article 
-      className="event-card bg-custom-bg-2 rounded-lg overflow-hidden shadow-lg transition-transform duration-300 hover:-translate-y-2 hover:shadow-2xl hover:shadow-custom-teal/20 border border-custom-border"
+      className="event-card card-hover bg-custom-bg-2 rounded-lg overflow-hidden border border-custom-border"
       aria-labelledby={`event-title-${event.id}`}
     >
       <div className="relative">
@@ -91,7 +91,7 @@ const EventCard = ({ event }) => {
         <div className="flex items-center justify-end">
           <button 
             type="button"
-            className="bg-custom-blue text-white px-6 py-2 rounded-lg hover:bg-blue-600 active:bg-blue-700 transition duration-300 focus:outline-none focus:ring-2 focus:ring-custom-blue focus:ring-offset-2 focus:ring-offset-custom-bg-2"
+            className="btn-primary text-white px-6 py-2 rounded-lg font-semibold focus:outline-none focus:ring-2 focus:ring-custom-blue focus:ring-offset-2 focus:ring-offset-custom-bg-2"
             onClick={handleRegisterClick}
             aria-label={`Register for ${title} event on ${date} at ${time}`}
             aria-describedby={`event-desc-${event.id}`}
