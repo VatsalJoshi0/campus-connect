@@ -1,14 +1,24 @@
-import React, { useState, useMemo } from 'react';
+import React, { useState, useMemo, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import Header from '../components/Header';
 import Footer from '../components/Footer';
 import EventCard from '../components/EventCard';
+import SkeletonLoader from '../components/SkeletonLoader';
 
 const EventsPage = () => {
   const navigate = useNavigate();
   const [activeFilter, setActiveFilter] = useState('All Events');
   const [searchQuery, setSearchQuery] = useState('');
   const [sortBy, setSortBy] = useState('date');
+  const [isLoading, setIsLoading] = useState(true);
+
+  // Simulate loading state
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      setIsLoading(false);
+    }, 800);
+    return () => clearTimeout(timer);
+  }, []);
 
   const events = useMemo(() => ([
     {
@@ -199,28 +209,47 @@ const EventsPage = () => {
           </div>
         </div>
 
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-          {filteredEvents.map((event) => (
-            <div key={event.id} className="relative">
-              <EventCard event={event} />
-              
-              <div className="absolute top-4 right-4 bg-custom-bg-3 text-custom-text-secondary text-xs px-2 py-1 rounded-full border border-custom-border">
-                {event.attendees}/{event.maxAttendees}
-              </div>
-            </div>
-          ))}
-        </div>
-
-        {filteredEvents.length === 0 && (
-          <div className="text-center py-12">
-            <span className="material-icons text-6xl text-custom-text-secondary mb-4 block">
-              event_busy
-            </span>
-            <h3 className="text-xl font-semibold text-custom-text mb-2">No events found</h3>
-            <p className="text-custom-text-secondary">
-              Try adjusting your filters or search terms
-            </p>
+        {isLoading ? (
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+            <SkeletonLoader type="card" count={6} />
           </div>
+        ) : (
+          <>
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+              {filteredEvents.map((event) => (
+                <div key={event.id} className="relative">
+                  <EventCard event={event} />
+                  
+                  {event.maxAttendees && (
+                    <div className="absolute top-4 right-4 bg-custom-bg-3 text-custom-text-secondary text-xs px-2 py-1 rounded-full border border-custom-border shadow-md">
+                      {event.attendees}/{event.maxAttendees}
+                    </div>
+                  )}
+                </div>
+              ))}
+            </div>
+
+            {filteredEvents.length === 0 && !isLoading && (
+              <div className="text-center py-16 animate-fadeIn">
+                <span className="material-icons text-6xl text-custom-text-secondary mb-4 block opacity-50">
+                  event_busy
+                </span>
+                <h3 className="text-2xl font-semibold text-custom-text mb-2">No events found</h3>
+                <p className="text-custom-text-secondary mb-6">
+                  Try adjusting your filters or search terms to find more events
+                </p>
+                <button
+                  onClick={() => {
+                    setActiveFilter('All Events');
+                    setSearchQuery('');
+                  }}
+                  className="bg-custom-teal text-black px-6 py-2 rounded-lg font-semibold hover:shadow-lg transition-all duration-300"
+                >
+                  Clear Filters
+                </button>
+              </div>
+            )}
+          </>
         )}
 
         <div className="mt-12 grid grid-cols-1 md:grid-cols-3 gap-6">

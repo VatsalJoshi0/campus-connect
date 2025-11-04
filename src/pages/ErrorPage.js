@@ -39,17 +39,17 @@ const ErrorPage = ({ errorCode = '404', errorMessage = 'Page not found' }) => {
     <div className="bg-custom-bg text-custom-text min-h-screen flex flex-col">
       <Header />
       
-      <main className="flex-1 container mx-auto px-4 lg:px-8 py-16 flex items-center justify-center">
+      <main id="main-content" className="flex-1 container mx-auto px-4 lg:px-8 py-8 sm:py-16 flex items-center justify-center" role="main">
         <div className="max-w-2xl w-full text-center">
           {/* Error Icon */}
-          <div className={`mb-8 ${error.color}`}>
-            <span className="material-icons text-8xl animate-pulse">
+          <div className={`mb-6 sm:mb-8 ${error.color}`} aria-hidden="true">
+            <span className="material-icons text-6xl sm:text-8xl animate-pulse">
               {error.icon}
             </span>
           </div>
 
           {/* Error Code */}
-          <h1 className="text-6xl font-bold text-custom-text mb-4 animate-slideUp">
+          <h1 className="text-4xl sm:text-6xl font-bold text-custom-text mb-4 animate-slideUp">
             {errorCode}
           </h1>
 
