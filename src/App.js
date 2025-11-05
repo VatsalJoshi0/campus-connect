@@ -23,6 +23,8 @@ const ProfilePage = lazy(() => import('./pages/ProfilePage'));
 const SettingsPage = lazy(() => import('./pages/SettingsPage'));
 const SchedulePage = lazy(() => import('./pages/SchedulePage'));
 const SocialFeedPage = lazy(() => import('./pages/SocialFeedPage'));
+const FeaturesPage = lazy(() => import('./pages/FeaturesPage'));
+const NotificationsPage = lazy(() => import('./pages/NotificationsPage'));
 const ErrorPage = lazy(() => import('./pages/ErrorPage'));
 
 const App = () => {
@@ -76,6 +78,8 @@ const App = () => {
                         <Route path="/settings" element={<SettingsPage />} />
                         <Route path="/schedule" element={<SchedulePage />} />
                         <Route path="/social-feed" element={<SocialFeedPage />} />
+                        <Route path="/features" element={<FeaturesPage />} />
+                        <Route path="/notifications" element={<NotificationsPage />} />
                         <Route path="*" element={<ErrorPage />} />
                       </Routes>
                     </Suspense>

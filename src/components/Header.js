@@ -107,7 +107,7 @@ const Header = () => {
               <input
                 className="search-input bg-custom-bg pl-10 pr-4 py-2 rounded-full text-custom-text focus:outline-none focus:ring-2 focus:ring-custom-teal w-48 lg:w-64 border border-custom-border"
                 placeholder="Search events or people..."
-                type="text"
+                type="search"
                 value={searchQuery}
                 onChange={(e) => {
                   setSearchQuery(e.target.value);
@@ -122,6 +122,10 @@ const Header = () => {
                     }
                   }, 200);
                 }}
+                aria-label="Search events or people"
+                aria-expanded={showSearchSuggestions}
+                aria-autocomplete="list"
+                role="combobox"
               />
               <SearchSuggestions
                 isOpen={showSearchSuggestions}
@@ -141,10 +145,13 @@ const Header = () => {
               <button
                 className="text-custom-text-secondary hover:text-custom-text relative"
                 onClick={() => setShowNotifications(!showNotifications)}
+                aria-label={`Notifications${unreadCount > 0 ? ` (${unreadCount} unread)` : ''}`}
+                aria-expanded={showNotifications}
+                aria-haspopup="true"
               >
-                <span className="material-icons">notifications</span>
+                <span className="material-icons" aria-hidden="true">notifications</span>
                 {unreadCount > 0 && (
-                  <span className="absolute -top-1 -right-1 bg-red-500 text-white text-xs rounded-full h-5 w-5 flex items-center justify-center">
+                  <span className="absolute -top-1 -right-1 bg-red-500 text-white text-xs rounded-full h-5 w-5 flex items-center justify-center" aria-label={`${unreadCount} unread notifications`}>
                     {unreadCount > 9 ? '9+' : unreadCount}
                   </span>
                 )}

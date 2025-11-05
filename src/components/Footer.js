@@ -1,8 +1,27 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 
 const Footer = () => {
   const currentYear = new Date().getFullYear();
+  const [showCookieBanner, setShowCookieBanner] = useState(false);
+
+  useEffect(() => {
+    const cookieConsent = localStorage.getItem('cookieConsent');
+    if (!cookieConsent) {
+      setShowCookieBanner(true);
+    }
+  }, []);
+
+  const handleAcceptCookies = () => {
+    localStorage.setItem('cookieConsent', 'accepted');
+    setShowCookieBanner(false);
+  };
+
+  const handleCustomizeCookies = () => {
+    localStorage.setItem('cookieConsent', 'customized');
+    setShowCookieBanner(false);
+    // In a real app, this would open a customization modal
+  };
 
   const links = {
     product: [
@@ -116,25 +135,45 @@ const Footer = () => {
       </div>
       
       {/* Cookie Consent Banner */}
-      <div className="fixed bottom-4 right-4 max-w-md bg-custom-bg-2 border border-custom-border rounded-lg shadow-xl p-4 backdrop-blur-lg bg-opacity-95">
-        <div className="flex items-start space-x-4">
-          <span className="material-icons text-custom-teal mt-1">cookie</span>
-          <div className="flex-1">
-            <p className="text-custom-text text-sm font-medium">Cookie Notice</p>
-            <p className="text-custom-text-secondary text-xs mt-1">
-              We use cookies to enhance your experience. By continuing to visit this site you agree to our use of cookies.
-            </p>
-            <div className="flex items-center space-x-3 mt-3">
-              <button className="text-xs bg-custom-teal text-black font-medium px-3 py-1.5 rounded-lg hover:opacity-90 transition-opacity">
-                Accept All
-              </button>
-              <button className="text-xs text-custom-text-secondary hover:text-custom-text px-3 py-1.5 transition-colors">
-                Customize
-              </button>
+      {showCookieBanner && (
+        <div className="fixed bottom-4 left-4 right-4 md:left-auto md:right-4 max-w-md bg-custom-bg-2 border border-custom-border rounded-lg shadow-xl p-4 backdrop-blur-lg bg-opacity-95 z-[9997] animate-slide-up">
+          <div className="flex items-start space-x-4">
+            <span className="material-icons text-custom-teal mt-1">cookie</span>
+            <div className="flex-1">
+              <div className="flex items-start justify-between mb-1">
+                <p className="text-custom-text text-sm font-medium">Cookie Notice</p>
+                <button
+                  onClick={() => setShowCookieBanner(false)}
+                  className="p-1 hover:bg-custom-bg rounded-full transition-colors ml-2"
+                  aria-label="Close cookie banner"
+                >
+                  <span className="material-icons text-sm text-custom-text-secondary">close</span>
+                </button>
+              </div>
+              <p className="text-custom-text-secondary text-xs mt-1">
+                We use cookies to enhance your experience. By continuing to visit this site you agree to our use of cookies.
+                <Link to="/cookies" className="text-custom-teal hover:underline ml-1">Learn more</Link>
+              </p>
+              <div className="flex items-center space-x-3 mt-3">
+                <button
+                  onClick={handleAcceptCookies}
+                  className="text-xs bg-custom-teal text-black font-medium px-3 py-1.5 rounded-lg hover:opacity-90 transition-opacity"
+                  aria-label="Accept all cookies"
+                >
+                  Accept All
+                </button>
+                <button
+                  onClick={handleCustomizeCookies}
+                  className="text-xs text-custom-text-secondary hover:text-custom-text px-3 py-1.5 transition-colors"
+                  aria-label="Customize cookie preferences"
+                >
+                  Customize
+                </button>
+              </div>
             </div>
           </div>
         </div>
-      </div>
+      )}
     </footer>
   );
 };

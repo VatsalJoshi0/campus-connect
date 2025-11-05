@@ -1,13 +1,15 @@
 import React, { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import Header from '../components/Header';
 import Footer from '../components/Footer';
 import QRCodeScanner from '../components/QRCodeScanner';
-// Removed unused import
 import { useNetworking } from '../contexts/NetworkingContext';
+import { useNotification } from '../contexts/NotificationContext';
 
 const NetworkPage = () => {
-  // Removed unused user import
+  const navigate = useNavigate();
   const { connections, suggestedMatches, connectWithUser } = useNetworking();
+  const { showInfo } = useNotification();
   const [activeTab, setActiveTab] = useState('matches');
   const [searchQuery, setSearchQuery] = useState('');
   const [showQRScanner, setShowQRScanner] = useState(false);
@@ -24,6 +26,19 @@ const NetworkPage = () => {
 
   const handleConnect = (person) => {
     connectWithUser(person);
+  };
+
+  const handleViewProfile = (person) => {
+    // Navigate to user profile with user ID
+    // Using profile page with query parameter for visitor view
+    navigate(`/profile?userId=${person.id}&view=visitor`);
+    showInfo(`Viewing ${person.name}'s profile`);
+  };
+
+  const handleMessage = (person) => {
+    // Navigate to messages page with pre-selected user
+    navigate(`/messages?userId=${person.id}`);
+    showInfo(`Opening chat with ${person.name}`);
   };
 
   const MatchCard = ({ person, isConnection = false }) => (
@@ -69,11 +84,19 @@ const NetworkPage = () => {
           <div className="flex items-center space-x-3 mt-4">
             {isConnection ? (
               <>
-                <button className="flex items-center space-x-2 btn-primary text-white px-4 py-2 rounded-lg font-semibold">
+                <button
+                  onClick={() => handleMessage(person)}
+                  className="flex items-center space-x-2 btn-primary text-white px-4 py-2 rounded-lg font-semibold hover:opacity-90 transition-opacity"
+                  aria-label={`Send message to ${person.name}`}
+                >
                   <span className="material-icons text-sm">chat</span>
                   <span>Message</span>
                 </button>
-                <button className="flex items-center space-x-2 bg-custom-bg border border-custom-border text-custom-text px-4 py-2 rounded-lg hover:bg-custom-bg-2 transition duration-300">
+                <button
+                  onClick={() => handleViewProfile(person)}
+                  className="flex items-center space-x-2 bg-custom-bg border border-custom-border text-custom-text px-4 py-2 rounded-lg hover:bg-custom-bg-2 transition duration-300"
+                  aria-label={`View ${person.name}'s profile`}
+                >
                   <span className="material-icons text-sm">person</span>
                   <span>View Profile</span>
                 </button>
@@ -82,12 +105,17 @@ const NetworkPage = () => {
               <>
                 <button
                   onClick={() => handleConnect(person)}
-                  className="flex items-center space-x-2 btn-primary text-white px-4 py-2 rounded-lg font-semibold"
+                  className="flex items-center space-x-2 btn-primary text-white px-4 py-2 rounded-lg font-semibold hover:opacity-90 transition-opacity"
+                  aria-label={`Connect with ${person.name}`}
                 >
                   <span className="material-icons text-sm">person_add</span>
                   <span>Connect</span>
                 </button>
-                <button className="flex items-center space-x-2 bg-custom-bg border border-custom-border text-custom-text px-4 py-2 rounded-lg hover:bg-custom-bg-2 transition duration-300">
+                <button
+                  onClick={() => handleViewProfile(person)}
+                  className="flex items-center space-x-2 bg-custom-bg border border-custom-border text-custom-text px-4 py-2 rounded-lg hover:bg-custom-bg-2 transition duration-300"
+                  aria-label={`View ${person.name}'s profile`}
+                >
                   <span className="material-icons text-sm">visibility</span>
                   <span>View</span>
                 </button>

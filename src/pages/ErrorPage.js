@@ -5,6 +5,10 @@ import Footer from '../components/Footer';
 
 const ErrorPage = ({ errorCode = '404', errorMessage = 'Page not found' }) => {
   const navigate = useNavigate();
+  
+  const handleRetry = () => {
+    window.location.reload();
+  };
 
   const errorDetails = {
     '404': {
@@ -64,10 +68,22 @@ const ErrorPage = ({ errorCode = '404', errorMessage = 'Page not found' }) => {
           </p>
 
           {/* Action Buttons */}
-          <div className="flex flex-col sm:flex-row gap-4 justify-center">
+          <div className="flex flex-col sm:flex-row gap-4 justify-center" role="group" aria-label="Error page actions">
+            {(errorCode === '500' || errorCode === 'network') && (
+              <button
+                onClick={handleRetry}
+                className="flex items-center justify-center space-x-2 bg-custom-teal text-black px-6 py-3 rounded-lg hover:opacity-90 transition-opacity font-semibold"
+                aria-label="Retry loading the page"
+              >
+                <span className="material-icons text-sm">refresh</span>
+                <span>Retry</span>
+              </button>
+            )}
+            
             <button
               onClick={() => navigate(-1)}
               className="flex items-center justify-center space-x-2 bg-custom-bg-2 border border-custom-border text-custom-text px-6 py-3 rounded-lg hover:bg-custom-bg-3 transition-colors"
+              aria-label="Go back to previous page"
             >
               <span className="material-icons text-sm">arrow_back</span>
               <span>Go Back</span>
@@ -76,6 +92,7 @@ const ErrorPage = ({ errorCode = '404', errorMessage = 'Page not found' }) => {
             <Link
               to="/"
               className="flex items-center justify-center space-x-2 btn-primary text-white px-6 py-3 rounded-lg font-semibold"
+              aria-label="Return to homepage"
             >
               <span className="material-icons text-sm">home</span>
               <span>Go to Homepage</span>
@@ -83,7 +100,7 @@ const ErrorPage = ({ errorCode = '404', errorMessage = 'Page not found' }) => {
           </div>
 
           {/* Helpful Links */}
-          <div className="mt-12 p-6 bg-custom-bg-2 rounded-lg border border-custom-border">
+          <nav className="mt-12 p-6 bg-custom-bg-2 rounded-lg border border-custom-border" aria-label="Helpful navigation links">
             <h3 className="text-lg font-semibold text-custom-text mb-4">
               Helpful Links
             </h3>
@@ -110,7 +127,7 @@ const ErrorPage = ({ errorCode = '404', errorMessage = 'Page not found' }) => {
                 <span>Get Help</span>
               </Link>
             </div>
-          </div>
+          </nav>
 
           {/* Error Code Display */}
           {errorCode === '404' && (

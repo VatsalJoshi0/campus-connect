@@ -1,32 +1,87 @@
-import React, { useState, useCallback, useRef } from 'react';
+import React, { useState, useCallback, useRef, useEffect } from 'react';
+import { useSearchParams } from 'react-router-dom';
 import Header from '../components/Header';
 import Footer from '../components/Footer';
 import { useAuth } from '../contexts/AuthContext';
+import { useNetworking } from '../contexts/NetworkingContext';
 import { useNotification } from '../contexts/NotificationContext';
 import UserAvatar from '../components/UserAvatar';
 import ProfileHeader from '../components/ProfileHeader';
 
 const ProfilePage = () => {
+  const [searchParams] = useSearchParams();
   const { user, updateUser } = useAuth();
-  const { showSuccess } = useNotification();
+  const { connections } = useNetworking();
+  const { showSuccess, showError } = useNotification();
   const fileInputRef = useRef(null);
+  
+  // Check if viewing another user's profile
+  const userId = searchParams.get('userId');
+  const viewMode = searchParams.get('view');
+  const isVisitorView = viewMode === 'visitor' && userId;
+  
+  // Get the profile to display
+  const [profileUser, setProfileUser] = useState(user);
   const [isEditing, setIsEditing] = useState(false);
   const [activeTab, setActiveTab] = useState('overview');
+  
+  useEffect(() => {
+    if (isVisitorView) {
+      // Find the user from connections or suggestedMatches
+      const foundUser = connections.find(c => c.id === parseInt(userId));
+      if (foundUser) {
+        // Map connection data to user profile format
+        setProfileUser({
+          ...foundUser,
+          bio: `${foundUser.field} student with expertise in ${foundUser.skills.join(', ')}.`,
+          interests: foundUser.skills || [],
+          goals: ['Network with peers', 'Learn new skills'],
+          projects: [],
+          profileCompletion: 75
+        });
+      } else {
+        showError('User profile not found', { duration: 4000 });
+      }
+    } else {
+      setProfileUser(user);
+    }
+  }, [userId, viewMode, isVisitorView, connections, user, showError]);
+  
   const [formData, setFormData] = useState({
-    name: user?.name || '',
-    email: user?.email || '',
-    phone: user?.phone || '',
-    enrollment: user?.enrollment || '',
-    field: user?.field || 'Computer Engineering',
-    year: user?.year || '2nd Year',
-    institute: user?.institute || 'Drs. Kiran & Pallavi Patel Global University',
-    bio: user?.bio || 'Passionate about technology and innovation. Always eager to learn and collaborate on exciting projects.',
-    interests: user?.interests || [],
-    skills: user?.skills || [],
-    goals: user?.goals || [],
-    projects: user?.projects || []
+    name: profileUser?.name || '',
+    email: profileUser?.email || '',
+    phone: profileUser?.phone || '',
+    enrollment: profileUser?.enrollment || '',
+    field: profileUser?.field || 'Computer Engineering',
+    year: profileUser?.year || '2nd Year',
+    institute: profileUser?.institute || 'Drs. Kiran & Pallavi Patel Global University',
+    bio: profileUser?.bio || 'Passionate about technology and innovation. Always eager to learn and collaborate on exciting projects.',
+    interests: profileUser?.interests || [],
+    skills: profileUser?.skills || [],
+    goals: profileUser?.goals || [],
+    projects: profileUser?.projects || []
   });
-
+  
+  // Update formData when profileUser changes
+  useEffect(() => {
+    if (profileUser) {
+      setFormData({
+        name: profileUser.name || '',
+        email: profileUser.email || '',
+        phone: profileUser.phone || '',
+        enrollment: profileUser.enrollment || '',
+        field: profileUser.field || 'Computer Engineering',
+        year: profileUser.year || '2nd Year',
+        institute: profileUser.institute || 'Drs. Kiran & Pallavi Patel Global University',
+        bio: profileUser.bio || 'Passionate about technology and innovation.',
+        interests: profileUser.interests || [],
+        skills: profileUser.skills || [],
+        goals: profileUser.goals || [],
+        projects: profileUser.projects || []
+      });
+    }
+  }, [profileUser]);
+  
   const [newItem, setNewItem] = useState('');
   const [newProject, setNewProject] = useState({
     title: '',
@@ -168,11 +223,19 @@ const ProfilePage = () => {
       <Header />
       
       <main className="container mx-auto px-4 lg:px-8 py-8">
+        {/* Visitor View Badge */}
+        {isVisitorView && (
+          <div className="mb-4 bg-blue-100 dark:bg-blue-900/30 border border-blue-300 dark:border-blue-700 text-blue-900 dark:text-blue-100 px-4 py-3 rounded-lg flex items-center space-x-2">
+            <span className="material-icons text-sm">visibility</span>
+            <span className="text-sm font-medium">Viewing {profileUser?.name}'s Profile</span>
+          </div>
+        )}
+        
         {/* Profile Header */}
         <div className="mb-8">
           <ProfileHeader
             user={{
-              ...user,
+              ...profileUser,
               name: formData.name,
               bio: formData.bio,
               field: formData.field,
@@ -180,8 +243,8 @@ const ProfilePage = () => {
               institute: formData.institute,
               initials: formData.name?.split(' ').map(n => n[0]).join('').toUpperCase() || 'U'
             }}
-            isEditing={isEditing}
-            onEditClick={() => setIsEditing(true)}
+            isEditing={isEditing && !isVisitorView}
+            onEditClick={() => !isVisitorView && setIsEditing(true)}
             onSave={handleSave}
             onCancel={() => setIsEditing(false)}
             onImageChange={async (e) => {

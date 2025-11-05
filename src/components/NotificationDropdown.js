@@ -1,8 +1,10 @@
 import React, { useRef, useEffect } from 'react';
+import { useNavigate } from 'react-router-dom';
 import { useNetworking } from '../contexts/NetworkingContext';
 
 const NotificationDropdown = ({ notifications, onClose }) => {
   const dropdownRef = useRef(null);
+  const navigate = useNavigate();
   const { markNotificationRead } = useNetworking();
 
   useEffect(() => {
@@ -50,14 +52,38 @@ const NotificationDropdown = ({ notifications, onClose }) => {
     if (!notification.read) {
       markNotificationRead(notification.id);
     }
+    
+    // Navigate based on notification type
+    onClose(); // Close the dropdown first
+    
+    switch (notification.type) {
+      case 'connection':
+        navigate('/network');
+        break;
+      case 'event':
+        navigate('/events');
+        break;
+      case 'message':
+        navigate('/messages');
+        break;
+      case 'badge':
+      case 'points':
+        navigate('/profile');
+        break;
+      case 'qr':
+        navigate('/network');
+        break;
+      default:
+        break;
+    }
   };
 
   return (
     <div
       ref={dropdownRef}
-      className="fixed inset-x-4 top-16 md:absolute md:inset-auto md:right-0 md:top-full md:mt-2 md:w-96 bg-custom-bg-2 border border-custom-border rounded-lg shadow-2xl z-50 max-h-[80vh] md:max-h-96 overflow-hidden backdrop-blur-lg bg-opacity-95 transition-all duration-300 transform"
+      className="fixed top-20 right-4 w-[calc(100vw-2rem)] md:w-96 bg-custom-bg-2 border border-custom-border rounded-lg shadow-2xl z-[9998] max-h-[calc(100vh-6rem)] backdrop-blur-lg bg-opacity-95 transition-all duration-300 transform flex flex-col"
     >
-      <div className="p-4 border-b border-custom-border flex items-center justify-between sticky top-0 bg-custom-bg-2 z-10">
+      <div className="p-4 border-b border-custom-border flex items-center justify-between bg-custom-bg-2 flex-shrink-0">
         <h3 className="text-lg font-semibold text-custom-text">Notifications</h3>
         <button
           onClick={onClose}
@@ -68,7 +94,7 @@ const NotificationDropdown = ({ notifications, onClose }) => {
         </button>
       </div>
 
-      <div className="overflow-y-auto max-h-[calc(80vh-4rem)] md:max-h-[400px]">
+      <div className="overflow-y-auto flex-1 min-h-0">
         {notifications && notifications.length > 0 ? (
           <div className="divide-y divide-custom-border">
             {notifications.map((notification) => (
@@ -148,7 +174,7 @@ const NotificationDropdown = ({ notifications, onClose }) => {
       </div>
       
       {notifications && notifications.length > 0 && (
-        <div className="p-4 border-t border-custom-border sticky bottom-0 bg-custom-bg-2">
+        <div className="p-4 border-t border-custom-border bg-custom-bg-2 flex-shrink-0">
           <div className="flex justify-between items-center">
             <button
               className="text-custom-teal hover:text-custom-text text-sm font-medium transition-colors"
@@ -160,7 +186,11 @@ const NotificationDropdown = ({ notifications, onClose }) => {
             </button>
             <button
               className="text-custom-text hover:text-custom-teal text-sm font-medium flex items-center gap-1 transition-colors"
-              onClick={onClose}
+              onClick={() => {
+                onClose();
+                navigate('/notifications');
+              }}
+              aria-label="View all notifications"
             >
               View All
               <span className="material-icons text-base">arrow_forward</span>

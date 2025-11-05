@@ -1,4 +1,5 @@
 import React, { useState, useRef, useEffect, useMemo, useCallback } from 'react';
+import { useSearchParams } from 'react-router-dom';
 import Header from '../components/Header';
 import MessageBubble from '../components/MessageBubble';
 import ChatList from '../components/ChatList';
@@ -8,6 +9,7 @@ import { useChat } from '../hooks/useChat';
 import { sanitizeChatMessage } from '../utils/sanitize';
 
 const MessagesPage = () => {
+  const [searchParams] = useSearchParams();
   const { user } = useAuth();
   const { connections } = useNetworking();
   const [activeChat, setActiveChat] = useState(null);
@@ -17,6 +19,19 @@ const MessagesPage = () => {
   const chatInputRef = useRef(null);
   const [isSearching, setIsSearching] = useState(false);
   const [searchQuery, setSearchQuery] = useState('');
+  
+  // Handle pre-selected user from URL parameter
+  useEffect(() => {
+    const userId = searchParams.get('userId');
+    if (userId) {
+      const userIdNum = parseInt(userId);
+      const connection = connections.find(c => c.id === userIdNum);
+      if (connection) {
+        setActiveChat(connection);
+        setActiveTab('direct');
+      }
+    }
+  }, [searchParams, connections]);
 
   const {
     messages,
