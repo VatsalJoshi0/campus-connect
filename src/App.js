@@ -25,6 +25,10 @@ const SchedulePage = lazy(() => import('./pages/SchedulePage'));
 const SocialFeedPage = lazy(() => import('./pages/SocialFeedPage'));
 const FeaturesPage = lazy(() => import('./pages/FeaturesPage'));
 const NotificationsPage = lazy(() => import('./pages/NotificationsPage'));
+const SecurityPage = lazy(() => import('./pages/SecurityPage'));
+const PrivacyPage = lazy(() => import('./pages/PrivacyPage'));
+const TermsPage = lazy(() => import('./pages/TermsPage'));
+const ComingSoonPage = lazy(() => import('./pages/ComingSoonPage'));
 const ErrorPage = lazy(() => import('./pages/ErrorPage'));
 
 const App = () => {
@@ -80,6 +84,20 @@ const App = () => {
                         <Route path="/social-feed" element={<SocialFeedPage />} />
                         <Route path="/features" element={<FeaturesPage />} />
                         <Route path="/notifications" element={<NotificationsPage />} />
+                        <Route path="/security" element={<SecurityPage />} />
+                        <Route path="/privacy" element={<PrivacyPage />} />
+                        <Route path="/terms" element={<TermsPage />} />
+                        <Route path="/faq" element={<ComingSoonPage />} />
+                        <Route path="/pricing" element={<ComingSoonPage />} />
+                        <Route path="/docs" element={<ComingSoonPage />} />
+                        <Route path="/blog" element={<ComingSoonPage />} />
+                        <Route path="/community" element={<ComingSoonPage />} />
+                        <Route path="/support" element={<ComingSoonPage />} />
+                        <Route path="/about" element={<ComingSoonPage />} />
+                        <Route path="/careers" element={<ComingSoonPage />} />
+                        <Route path="/contact" element={<ComingSoonPage />} />
+                        <Route path="/partners" element={<ComingSoonPage />} />
+                        <Route path="/cookies" element={<ComingSoonPage />} />
                         <Route path="*" element={<ErrorPage />} />
                       </Routes>
                     </Suspense>

@@ -29,6 +29,8 @@ const EventsPage = () => {
       location: "Main Campus Hall",
       category: "Technology",
       attendees: 120,
+      image: "https://images.unsplash.com/photo-1504384308090-c894fdcc538d?w=800&auto=format&fit=crop&q=60",
+      description: "Join us for an exciting 24-hour hackathon where creativity meets innovation."
     },
     {
       id: 2,
@@ -42,7 +44,8 @@ const EventsPage = () => {
       attendees: 120,
       maxAttendees: 150,
       tags: ['Networking', 'Career', 'Professional'],
-      organizer: 'Career Services'
+      organizer: 'Career Services',
+      image: "https://images.unsplash.com/photo-1515187029135-18ee286d815b?w=800&auto=format&fit=crop&q=60"
     },
     {
       id: 3,
@@ -56,7 +59,8 @@ const EventsPage = () => {
       attendees: 200,
       maxAttendees: 300,
       tags: ['Career', 'Jobs', 'Internships'],
-      organizer: 'Career Center'
+      organizer: 'Career Center',
+      image: "https://images.unsplash.com/photo-1540575467063-178a50c2df87?w=800&auto=format&fit=crop&q=60"
     },
     {
       id: 4,
@@ -70,7 +74,8 @@ const EventsPage = () => {
       attendees: 80,
       maxAttendees: 100,
       tags: ['Hackathon', 'Innovation', 'Team Building'],
-      organizer: 'Innovation Lab'
+      organizer: 'Innovation Lab',
+      image: "https://images.unsplash.com/photo-1531545514256-b1400bc00f31?w=800&auto=format&fit=crop&q=60"
     },
     {
       id: 5,
@@ -84,7 +89,8 @@ const EventsPage = () => {
       attendees: 25,
       maxAttendees: 30,
       tags: ['Web Development', 'JavaScript', 'React'],
-      organizer: 'CS Department'
+      organizer: 'CS Department',
+      image: "https://images.unsplash.com/photo-1517694712202-14dd9538aa97?w=800&auto=format&fit=crop&q=60"
     },
     {
       id: 6,
@@ -98,7 +104,8 @@ const EventsPage = () => {
       attendees: 60,
       maxAttendees: 80,
       tags: ['Startup', 'Entrepreneurship', 'Pitch'],
-      organizer: 'Entrepreneurship Club'
+      organizer: 'Entrepreneurship Club',
+      image: "https://images.unsplash.com/photo-1559136555-9303baea8ebd?w=800&auto=format&fit=crop&q=60"
     }
   ]), []);
 

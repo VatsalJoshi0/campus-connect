@@ -270,7 +270,7 @@ const ProfilePage = () => {
 
         {/* Tabs */}
         <div className="mb-8">
-          <div className="flex space-x-1 bg-custom-bg-2 p-1 rounded-lg border border-custom-border">
+          <nav className="flex flex-col sm:flex-row gap-2 sm:gap-1 bg-custom-bg-2 p-2 rounded-lg border border-custom-border" role="tablist" aria-label="Profile sections">
             {[
               { id: 'overview', label: 'Overview', icon: 'person' },
               { id: 'skills', label: 'Skills & Interests', icon: 'psychology' },
@@ -279,18 +279,21 @@ const ProfilePage = () => {
             ].map((tab) => (
               <button
                 key={tab.id}
-                className={`flex-1 py-3 px-4 rounded-md text-sm font-medium transition-colors flex items-center justify-center space-x-2 ${
+                role="tab"
+                aria-selected={activeTab === tab.id}
+                aria-controls={`${tab.id}-panel`}
+                className={`min-h-[44px] py-3 px-4 rounded-md text-sm font-medium transition-all duration-200 flex items-center justify-center gap-2 ${
                   activeTab === tab.id
-                    ? 'bg-custom-teal text-black'
-                    : 'text-custom-text-secondary hover:text-custom-text'
+                    ? 'bg-custom-teal text-black shadow-md'
+                    : 'text-custom-text-secondary hover:text-custom-text hover:bg-custom-bg'
                 }`}
                 onClick={() => setActiveTab(tab.id)}
               >
-                <span className="material-icons text-sm">{tab.icon}</span>
-                <span>{tab.label}</span>
+                <span className="material-icons text-sm" aria-hidden="true">{tab.icon}</span>
+                <span className="whitespace-nowrap">{tab.label}</span>
               </button>
             ))}
-          </div>
+          </nav>
         </div>
 
         {/* Tab Content */}

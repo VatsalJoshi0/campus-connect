@@ -67,21 +67,22 @@ const Footer = () => {
               collaboration opportunities. Join our community to enhance your 
               educational and professional journey.
             </p>
-            <div className="flex space-x-4 mt-6">
-              {['facebook', 'twitter', 'linkedin', 'github'].map((platform) => (
+            <div className="flex items-center gap-3 mt-6" role="group" aria-label="Social media links">
+              {[
+                { name: 'facebook', icon: 'facebook', url: 'https://facebook.com/campusconnect' },
+                { name: 'twitter', icon: 'alternate_email', url: 'https://twitter.com/campusconnect' },
+                { name: 'linkedin', icon: 'work', url: 'https://linkedin.com/company/campusconnect' },
+                { name: 'github', icon: 'code', url: 'https://github.com/campusconnect' }
+              ].map((platform) => (
                 <a
-                  key={platform}
-                  href={`https://${platform}.com/campusconnect`}
+                  key={platform.name}
+                  href={platform.url}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="p-2 text-custom-text-secondary hover:text-custom-teal hover:bg-custom-bg rounded-full transition-all duration-300"
-                  aria-label={`Follow us on ${platform}`}
+                  className="flex items-center justify-center w-10 h-10 min-w-[44px] min-h-[44px] text-custom-text-secondary hover:text-custom-teal hover:bg-custom-bg rounded-full transition-all duration-300 hover:scale-110"
+                  aria-label={`Follow us on ${platform.name.charAt(0).toUpperCase() + platform.name.slice(1)}`}
                 >
-                  <span className="material-icons text-xl">{
-                    platform === 'linkedin' ? 'work' :
-                    platform === 'github' ? 'code' :
-                    platform
-                  }</span>
+                  <span className="material-icons text-xl">{platform.icon}</span>
                 </a>
               ))}
             </div>

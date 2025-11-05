@@ -54,24 +54,57 @@ const SettingsPage = () => {
   };
 
   const ToggleSwitch = ({ enabled, onChange, label, description }) => (
-    <div className="flex items-center justify-between py-3">
-      <div className="flex-1">
-        <h4 className="font-medium text-custom-text">{label}</h4>
+    <div className="flex items-center justify-between py-4 px-4 rounded-lg hover:bg-custom-bg transition-colors">
+      <div className="flex-1 pr-4">
+        <h4 className="font-semibold text-custom-text mb-1">{label}</h4>
         {description && (
-          <p className="text-sm text-custom-text-secondary">{description}</p>
+          <p className="text-sm text-custom-text-secondary leading-relaxed">{description}</p>
         )}
       </div>
       <button
         onClick={() => onChange(!enabled)}
-        className={`relative inline-flex h-6 w-11 items-center rounded-full transition-colors ${
-          enabled ? 'bg-custom-teal' : 'bg-custom-border'
+        role="switch"
+        aria-checked={enabled}
+        aria-label={`Toggle ${label}`}
+        className={`relative inline-flex h-7 w-14 min-w-[56px] flex-shrink-0 items-center rounded-full transition-all duration-300 ease-in-out focus:outline-none focus:ring-2 focus:ring-custom-teal focus:ring-offset-2 focus:ring-offset-custom-bg-2 ${
+          enabled 
+            ? 'bg-custom-teal shadow-lg shadow-custom-teal/30' 
+            : 'bg-gray-300 dark:bg-gray-600'
         }`}
       >
+        {/* Toggle Circle */}
         <span
-          className={`inline-block h-4 w-4 transform rounded-full bg-custom-bg-2 transition-transform ${
-            enabled ? 'translate-x-6' : 'translate-x-1'
+          className={`inline-flex h-6 w-6 transform items-center justify-center rounded-full bg-white shadow-md transition-all duration-300 ease-in-out ${
+            enabled ? 'translate-x-7' : 'translate-x-0.5'
           }`}
-        />
+        >
+          {/* Icon indicator */}
+          {enabled ? (
+            <svg className="h-3 w-3 text-custom-teal" fill="currentColor" viewBox="0 0 20 20">
+              <path fillRule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clipRule="evenodd" />
+            </svg>
+          ) : (
+            <svg className="h-3 w-3 text-gray-400" fill="currentColor" viewBox="0 0 20 20">
+              <path fillRule="evenodd" d="M4.293 4.293a1 1 0 011.414 0L10 8.586l4.293-4.293a1 1 0 111.414 1.414L11.414 10l4.293 4.293a1 1 0 01-1.414 1.414L10 11.414l-4.293 4.293a1 1 0 01-1.414-1.414L8.586 10 4.293 5.707a1 1 0 010-1.414z" clipRule="evenodd" />
+            </svg>
+          )}
+        </span>
+        
+        {/* ON/OFF Labels */}
+        <span 
+          className={`absolute left-2 text-[10px] font-bold transition-opacity duration-200 ${
+            enabled ? 'opacity-100 text-white' : 'opacity-0'
+          }`}
+        >
+          ON
+        </span>
+        <span 
+          className={`absolute right-2 text-[10px] font-bold transition-opacity duration-200 ${
+            !enabled ? 'opacity-100 text-gray-500 dark:text-gray-400' : 'opacity-0'
+          }`}
+        >
+          OFF
+        </span>
       </button>
     </div>
   );
@@ -262,9 +295,9 @@ const SettingsPage = () => {
                   <h2 className="text-2xl font-bold text-custom-text">Notification Settings</h2>
                   
                   <div className="space-y-6">
-                    <div>
-                      <h3 className="text-lg font-semibold text-custom-text mb-4">Notification Channels</h3>
-                      <div className="space-y-1">
+                    <div className="bg-custom-bg-2 rounded-lg border border-custom-border p-2">
+                      <h3 className="text-lg font-semibold text-custom-text mb-2 px-4 pt-2">Notification Channels</h3>
+                      <div className="space-y-0 divide-y divide-custom-border">
                         <ToggleSwitch
                           enabled={settings.notifications.email}
                           onChange={(value) => handleSettingChange('notifications', 'email', value)}
@@ -286,9 +319,9 @@ const SettingsPage = () => {
                       </div>
                     </div>
 
-                    <div>
-                      <h3 className="text-lg font-semibold text-custom-text mb-4">Event Notifications</h3>
-                      <div className="space-y-1">
+                    <div className="bg-custom-bg-2 rounded-lg border border-custom-border p-2">
+                      <h3 className="text-lg font-semibold text-custom-text mb-2 px-4 pt-2">Event Notifications</h3>
+                      <div className="space-y-0 divide-y divide-custom-border">
                         <ToggleSwitch
                           enabled={settings.notifications.eventReminders}
                           onChange={(value) => handleSettingChange('notifications', 'eventReminders', value)}
@@ -338,9 +371,9 @@ const SettingsPage = () => {
                       />
                     </div>
 
-                    <div>
-                      <h3 className="text-lg font-semibold text-custom-text mb-4">Contact Information</h3>
-                      <div className="space-y-1">
+                    <div className="bg-custom-bg-2 rounded-lg border border-custom-border p-2">
+                      <h3 className="text-lg font-semibold text-custom-text mb-2 px-4 pt-2">Contact Information</h3>
+                      <div className="space-y-0 divide-y divide-custom-border">
                         <ToggleSwitch
                           enabled={settings.privacy.showEmail}
                           onChange={(value) => handleSettingChange('privacy', 'showEmail', value)}
@@ -356,9 +389,9 @@ const SettingsPage = () => {
                       </div>
                     </div>
 
-                    <div>
-                      <h3 className="text-lg font-semibold text-custom-text mb-4">Activity Settings</h3>
-                      <div className="space-y-1">
+                    <div className="bg-custom-bg-2 rounded-lg border border-custom-border p-2">
+                      <h3 className="text-lg font-semibold text-custom-text mb-2 px-4 pt-2">Activity Settings</h3>
+                      <div className="space-y-0 divide-y divide-custom-border">
                         <ToggleSwitch
                           enabled={settings.privacy.showProjects}
                           onChange={(value) => handleSettingChange('privacy', 'showProjects', value)}
@@ -424,9 +457,9 @@ const SettingsPage = () => {
                       ]}
                     />
 
-                    <div>
-                      <h3 className="text-lg font-semibold text-custom-text mb-4">Smart Features</h3>
-                      <div className="space-y-1">
+                    <div className="bg-custom-bg-2 rounded-lg border border-custom-border p-2">
+                      <h3 className="text-lg font-semibold text-custom-text mb-2 px-4 pt-2">Smart Features</h3>
+                      <div className="space-y-0 divide-y divide-custom-border">
                         <ToggleSwitch
                           enabled={settings.preferences.autoJoinEvents}
                           onChange={(value) => handleSettingChange('preferences', 'autoJoinEvents', value)}

@@ -130,7 +130,7 @@ const MessagesPage = () => {
         <button
           key={item.id}
           type="button"
-          className={`w-full p-4 rounded-lg cursor-pointer transition-colors text-left ${
+          className={`w-full p-4 min-h-[76px] rounded-lg cursor-pointer transition-colors text-left ${
             activeChat === item.id
               ? 'bg-custom-teal bg-opacity-20 border-l-4 border-custom-teal'
               : 'bg-custom-bg-2 hover:bg-custom-bg border border-custom-border'
@@ -139,8 +139,8 @@ const MessagesPage = () => {
           aria-current={activeChat === item.id ? 'true' : undefined}
           aria-label={`Chat with ${item.name}. Last message: ${item.lastMessage || item.description || 'No messages'}`}
         >
-          <div className="flex items-center space-x-3">
-            <div className="w-12 h-12 rounded-full bg-gradient-to-r from-custom-blue to-custom-teal flex items-center justify-center text-white font-bold">
+          <div className="flex items-center gap-3">
+            <div className="w-12 h-12 rounded-full bg-gradient-to-r from-custom-blue to-custom-teal flex items-center justify-center font-bold" style={{ color: '#000000' }}>
               {item.initials || item.avatar}
             </div>
             <div className="flex-1 min-w-0">
@@ -197,10 +197,10 @@ const MessagesPage = () => {
     <div className="bg-custom-bg text-custom-text min-h-screen">
       <Header />
       
-      <main className="container mx-auto px-4 lg:px-8 py-8" id="main-content">
-        <div className="bg-custom-bg-2 rounded-lg border border-custom-border h-[calc(100vh-200px)] flex">
+      <main className="container mx-auto px-2 sm:px-4 lg:px-8 py-4 sm:py-8" id="main-content">
+        <div className="bg-custom-bg-2 rounded-lg border border-custom-border h-[calc(100vh-140px)] sm:h-[calc(100vh-200px)] flex flex-col md:flex-row">
           {/* Sidebar */}
-          <aside className="w-1/3 border-r border-custom-border flex flex-col" aria-label="Message list">
+          <aside className={`w-full md:w-1/3 border-b md:border-b-0 md:border-r border-custom-border flex flex-col ${activeChat && 'hidden md:flex'}`} aria-label="Message list">
             {/* Header */}
             <div className="p-4 border-b border-custom-border space-y-4">
               <div className="flex items-center justify-between">
@@ -289,13 +289,22 @@ const MessagesPage = () => {
           </aside>
 
           {/* Chat Area */}
-          <section className="flex-1 flex flex-col" aria-label="Chat conversation">
+          <section className={`flex-1 flex flex-col ${!activeChat && 'hidden md:flex'}`} aria-label="Chat conversation">
             {activeChat ? (
               <>
                 {/* Chat Header */}
-                <header className="p-4 border-b border-custom-border bg-custom-bg-2">
+                <header className="p-3 sm:p-4 border-b border-custom-border bg-custom-bg-2">
                   <div className="flex items-center justify-between">
-                    <div className="flex items-center space-x-3">
+                    <div className="flex items-center gap-2 sm:gap-3">
+                      {/* Back button for mobile */}
+                      <button
+                        type="button"
+                        className="md:hidden p-2 min-w-[44px] min-h-[44px] text-custom-text-secondary hover:text-custom-text hover:bg-custom-bg rounded-lg transition-colors flex items-center justify-center"
+                        onClick={() => setActiveChat(null)}
+                        aria-label="Back to message list"
+                      >
+                        <span className="material-icons">arrow_back</span>
+                      </button>
                       <div className="relative">
                         <div 
                           className="w-10 h-10 rounded-full bg-gradient-to-r from-custom-blue to-custom-teal flex items-center justify-center text-white font-bold ring-2 ring-custom-teal ring-offset-2 ring-offset-custom-bg-2"

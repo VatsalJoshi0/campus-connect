@@ -30,7 +30,8 @@ const ProfileHeader = ({
               />
             ) : (
               <div 
-                className="w-full h-full rounded-full bg-gradient-to-br from-custom-teal to-custom-blue flex items-center justify-center text-white text-3xl font-bold ring-4 ring-custom-teal ring-offset-4 ring-offset-custom-bg-2"
+                className="w-full h-full rounded-full bg-gradient-to-br from-custom-teal to-custom-blue flex items-center justify-center text-3xl font-bold ring-4 ring-custom-teal ring-offset-4 ring-offset-custom-bg-2"
+                style={{ color: '#000000' }}
                 role="img"
                 aria-label={`${user?.name}'s profile avatar with initials ${user?.initials}`}
               >

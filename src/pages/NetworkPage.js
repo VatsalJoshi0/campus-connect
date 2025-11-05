@@ -141,17 +141,17 @@ const NetworkPage = () => {
         </div>
 
         {/* AI Matching Stats */}
-  <div className="mb-8 bg-gradient-to-r from-custom-blue to-custom-teal p-6 rounded-lg text-black dark:text-white">
+  <div className="mb-8 bg-gradient-to-r from-custom-blue to-custom-teal p-6 rounded-lg" style={{ color: '#000000' }}>
           <div className="flex items-center justify-between">
             <div>
-              <h2 className="text-2xl font-bold mb-2">AI-Powered Matching</h2>
-              <p className="opacity-90">
+              <h2 className="text-2xl font-bold mb-2" style={{ color: '#000000' }}>AI-Powered Matching</h2>
+              <p className="opacity-90" style={{ color: '#000000' }}>
                 Our smart algorithm analyzes your interests, skills, and goals to find the best connections
               </p>
             </div>
             <div className="text-right">
-              <div className="text-3xl font-bold">{suggestedMatches.length}</div>
-              <div className="text-sm opacity-90">New Matches</div>
+              <div className="text-3xl font-bold" style={{ color: '#000000' }}>{suggestedMatches.length}</div>
+              <div className="text-sm opacity-90" style={{ color: '#000000' }}>New Matches</div>
             </div>
           </div>
         </div>
